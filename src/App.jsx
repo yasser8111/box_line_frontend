@@ -2,6 +2,8 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { CartProvider } from './context/CartContext'
 import Home from './pages/Home'
+import Category from './pages/Category'
+import WrappingService from './pages/WrappingService'
 import ProductDetails from './pages/ProductDetails'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
@@ -15,8 +17,9 @@ function App() {
           <Route path="/product/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
-          {/* Category routes redirect to home for now */}
-          <Route path="/categories/:category" element={<Home />} />
+          {/* New Category routes */}
+          <Route path="/category/:type" element={<Category />} />
+          <Route path="/service/wrapping" element={<WrappingService />} />
         </Routes>
       </Router>
     </CartProvider>
