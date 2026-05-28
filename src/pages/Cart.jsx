@@ -20,7 +20,7 @@ export default function Cart() {
       {/* Breadcrumb */}
       <div className="bg-white border-b border-neutral-100 py-3 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-neutral-500">
-          <Link to="/" className="hover:text-brand-green">الرئيسية</Link>
+          <Link to="/" className="hover:text-neutral-900 transition-colors">الرئيسية</Link>
           <span>/</span>
           <span className="text-neutral-900 font-bold">سلة المشتريات ({cart.length} منتج)</span>
         </div>
@@ -41,7 +41,7 @@ export default function Cart() {
             </p>
             <Link
               to="/"
-              className="px-8 py-3 bg-brand-green text-white font-bold rounded-lg hover:bg-green-600 transition-all shadow-lg shadow-brand-green/20"
+              className="px-8 py-3 bg-neutral-900 text-white font-bold rounded-full hover:bg-neutral-800 transition-all shadow-md"
             >
               تصفح خدمات الطباعة
             </Link>
@@ -74,7 +74,7 @@ export default function Cart() {
                     {/* Product Visual */}
                     <div className="w-full sm:w-32 h-32 bg-neutral-950 rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
                       <svg className="w-full h-full p-4" viewBox="0 0 100 100" fill="none">
-                        <polygon points="50,22 80,35 50,48 20,35" fill="#2fa134" opacity="0.8" />
+                        <polygon points="50,22 80,35 50,48 20,35" fill="#555" opacity="0.8" />
                         <polygon points="50,48 80,35 80,68 50,81" fill="#fff" opacity="0.8" />
                         <polygon points="20,35 50,48 50,81 20,68" fill="#fff" opacity="0.65" />
                       </svg>
@@ -140,7 +140,7 @@ export default function Cart() {
                         {item.options.uploadedFile && (
                           <div>
                             <span className="block text-neutral-400 text-[9px] font-bold">ملف التصميم:</span>
-                            <span className="font-semibold text-brand-green line-clamp-1">📎 {item.options.uploadedFile}</span>
+                             <span className="font-semibold text-neutral-800 line-clamp-1">📎 {item.options.uploadedFile}</span>
                           </div>
                         )}
                         {item.options.designService === "needed" && (
@@ -155,11 +155,11 @@ export default function Cart() {
                       <div className="flex items-center justify-between pt-2 border-t border-neutral-50">
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-neutral-400">الكمية:</span>
-                          <div className="flex items-center bg-neutral-100 rounded-lg overflow-hidden border border-neutral-200">
+                          <div className="flex items-center bg-neutral-100 rounded-full overflow-hidden border border-neutral-200">
                             <button
                               onClick={() => updateQuantity(item.cartItemId, item.quantity - (item.quantity >= 500 ? 50 : item.quantity >= 100 ? 25 : 10))}
                               disabled={item.quantity <= 50}
-                              className="px-2.5 py-1 text-neutral-700 hover:text-brand-green hover:bg-neutral-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-sm font-bold"
+                              className="px-2.5 py-1 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-200 transition-colors disabled:opacity-30 disabled:cursor-not-allowed text-sm font-bold"
                             >
                               −
                             </button>
@@ -168,7 +168,7 @@ export default function Cart() {
                             </span>
                             <button
                               onClick={() => updateQuantity(item.cartItemId, item.quantity + (item.quantity >= 500 ? 50 : item.quantity >= 100 ? 25 : 10))}
-                              className="px-2.5 py-1 text-neutral-700 hover:text-brand-green hover:bg-neutral-200 transition-colors text-sm font-bold"
+                              className="px-2.5 py-1 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-200 transition-colors text-sm font-bold"
                             >
                               +
                             </button>
@@ -178,7 +178,7 @@ export default function Cart() {
 
                         <div className="text-left">
                           <span className="block text-[10px] text-neutral-400">سعر القطعة: {item.options.unitPrice} ريال</span>
-                          <span className="text-lg font-black text-brand-green">{item.price.toFixed(2)} ريال</span>
+                           <span className="text-lg font-black text-neutral-900">{item.price.toFixed(2)} ريال</span>
                         </div>
                       </div>
                     </div>
@@ -200,7 +200,7 @@ export default function Cart() {
                   
                   <div className="flex justify-between">
                     <span>رسوم الشحن والتوصيل:</span>
-                    <span className={`font-bold ${shipping === 0 ? "text-brand-green" : "text-neutral-900"}`}>
+                    <span className={`font-bold ${shipping === 0 ? "text-neutral-900" : "text-neutral-900"}`}>
                       {shipping === 0 ? "مجاناً 🎉" : `${shipping.toFixed(2)} ريال`}
                     </span>
                   </div>
@@ -218,55 +218,54 @@ export default function Cart() {
 
                   <div className="flex justify-between items-end border-t border-neutral-100 pt-4">
                     <span className="text-base font-bold text-neutral-900">الإجمالي النهائي:</span>
-                    <span className="text-2xl font-black text-brand-green">{grandTotal.toFixed(2)} ريال</span>
+                     <span className="text-2xl font-black text-neutral-900">{grandTotal.toFixed(2)} ريال</span>
                   </div>
                 </div>
 
-                <button
+                 <button
                   onClick={() => navigate("/checkout")}
-                  className="w-full py-4 bg-brand-green hover:bg-green-600 text-white font-bold rounded-xl shadow-lg shadow-brand-green/20 transition-all text-sm flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded-full shadow-md transition-all text-sm flex items-center justify-center gap-2"
                 >
                   <span>إتمام الطلب والدفع</span>
                   <svg className="w-4 h-4 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
                 </button>
-
+ 
                 <Link
                   to="/"
-                  className="w-full py-3 border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-700 font-semibold rounded-xl text-sm text-center block transition-all"
+                  className="w-full py-3 border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-700 font-semibold rounded-full text-sm text-center block transition-all"
                 >
-                  متابعة التسوق
+                  العودة للتسوق
                 </Link>
               </div>
 
-              {/* Trust badges */}
               <div className="bg-white rounded-2xl border border-neutral-100 p-5 space-y-3.5">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-brand-green/10 flex items-center justify-center text-brand-green text-sm">🔒</div>
+                  <div className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-900 text-sm">🔒</div>
                   <div>
                     <span className="block text-xs font-bold text-neutral-900">دفع آمن 100%</span>
                     <span className="block text-[10px] text-neutral-400">نستخدم أحدث تقنيات التشفير لحماية بياناتك</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-brand-green/10 flex items-center justify-center text-brand-green text-sm">📦</div>
+                  <div className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-900 text-sm">📦</div>
                   <div>
                     <span className="block text-xs font-bold text-neutral-900">شحن مؤمّن وسريع</span>
                     <span className="block text-[10px] text-neutral-400">تغليف مضاعف وشحن خلال 3-5 أيام عمل</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-brand-green/10 flex items-center justify-center text-brand-green text-sm">✅</div>
+                  <div className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-900 text-sm">✅</div>
                   <div>
                     <span className="block text-xs font-bold text-neutral-900">مراجعة فنية مجانية</span>
                     <span className="block text-[10px] text-neutral-400">مهندسو الطباعة يفحصون ملفاتك قبل الإنتاج</span>
                   </div>
                 </div>
               </div>
-            </div>
 
           </div>
+        </div>
         )}
       </main>
 
