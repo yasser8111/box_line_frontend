@@ -1,40 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import ProductCard from "../components/ui/ProductCard";
-import SectionTitle from "../components/ui/SectionTitle";
-import { READY_PRODUCTS, CATEGORIES } from "../data/products";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
-
-const FEATURES = [
-  { icon: "🚚", title: "توصيل سريع", desc: "شحن لجميع مدن المملكة" },
-  { icon: "🎨", title: "تخصيص كامل", desc: "صمّم تغليفك بلمساتك" },
-  { icon: "✅", title: "جودة مضمونة", desc: "مواد فاخرة وطباعة دقيقة" },
-  { icon: "💬", title: "دعم مباشر", desc: "فريقنا جاهز لمساعدتك" },
-];
-
-const WRAPPING_STEPS = [
-  {
-    num: "01",
-    title: "نستلم الهدية",
-    desc: "مندوبنا يصل لبابك لاستلام الهدية بأمان.",
-  },
-  {
-    num: "02",
-    title: "نغلفها باحتراف",
-    desc: "فريقنا يبدع في التغليف بأرقى الخامات.",
-    highlight: true,
-  },
-  {
-    num: "03",
-    title: "نوصلها للمستلم",
-    desc: "توصيل الهدية المغلفة مباشرة لمن تحب.",
-  },
-];
 
 
 export function Hero() {
@@ -57,7 +28,7 @@ export function Hero() {
   ];
 
   return (
-    <section className="bg-white min-h-[calc(100vh-80px)] flex items-center py-4 lg:py-6 overflow-hidden" dir="rtl">
+    <section className=" min-h-[calc(100vh-80px)] flex items-center py-4 lg:py-6 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col justify-between gap-6 lg:gap-10">
         
         {/* Top Content: Title & Stats */}
@@ -66,7 +37,7 @@ export function Hero() {
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-light text-neutral-900 leading-tight md:leading-tight">
               هديتك تحمل شعورًا، <br />
               ونحن نمنحه{" "}
-              <span className="font-black text-black inline-block">جمـــالًا</span>
+              <span className="font-black text-green-600 inline-block">جمـــالًا</span>
               
               {/* Desktop Button with Arrow */}
               <span className="hidden md:inline-flex items-center gap-4 mr-4 whitespace-nowrap">
@@ -186,6 +157,142 @@ export function Hero() {
   );
 }
 
+export function BestSellers() {
+  const swiperRef = useRef(null);
+
+  const BEST_PRODUCTS = [
+    { 
+      id: 1, 
+      image: "/imges/product_1.png", 
+      title: "صندوق السعادة الفاخر", 
+      desc: "تنسيق متكامل يجمع بين الفخامة والأناقة ليناسب جميع مناسباتكم السعيدة." 
+    },
+    { 
+      id: 2, 
+      image: "/imges/product_2.png", 
+      title: "مجموعة الاسترخاء العطرية", 
+      desc: "تحتوي على روائح مهدئة ومختارة بعناية لتجربة استرخاء فريدة ومثالية." 
+    },
+    { 
+      id: 3, 
+      image: "/imges/product_3.png", 
+      title: "تغليف كلاسيكي راقي", 
+      desc: "لمسات يدوية دقيقة بخامات فخمة تضفي على هديتك رونقاً جذاباً وساحراً." 
+    },
+    { 
+      id: 4, 
+      image: "/imges/product_4.png", 
+      title: "باقة ورد جوري طبيعي", 
+      desc: "تنسيق كلاسيكي مذهل من أجود أنواع الورد الطبيعي لتعبر عن أصدق المشاعر." 
+    },
+    { 
+      id: 5, 
+      image: "/imges/product_5.png", 
+      title: "صندوق الذكريات الخشبي", 
+      desc: "محفور يدوياً بدقة عالية ليحفظ أدق تفاصيل ولحظات العمر الجميلة." 
+    },
+    { 
+      id: 6, 
+      image: "/imges/product_6.png", 
+      title: "تنسيق ملكي خاص", 
+      desc: "مجموعة حصرية مصممة خصيصاً للشخصيات المميزة لتترك انطباعاً لا ينسى." 
+    },
+  ];
+
+  return (
+    <section className="bg-white py-10 md:py-16 overflow-hidden" dir="rtl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header with Title & Navigation Controls */}
+        <div className="flex items-center justify-between mb-8 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-neutral-900 tracking-tight">
+            المنتجات الأكثر مبيعًـــا
+          </h2>
+          
+          {/* Custom Navigation Buttons */}
+          <div className="flex items-center gap-2" dir="ltr">
+            <button 
+              onClick={() => swiperRef.current?.swiper?.slidePrev()}
+              className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-800 hover:bg-neutral-50 active:scale-95 transition-all"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button 
+              onClick={() => swiperRef.current?.swiper?.slideNext()}
+              className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-800 hover:bg-neutral-50 active:scale-95 transition-all"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Responsive Swiper Carousel */}
+        <div className="w-full overflow-hidden">
+          <Swiper
+            ref={swiperRef}
+            modules={[Autoplay, Navigation]}
+            spaceBetween={24}
+            loop={true}
+            autoplay={{
+              delay: 3500,
+              disableOnInteraction: false,
+            }}
+            breakpoints={{
+              320: {
+                slidesPerView: 2,
+                spaceBetween: 16,
+              },
+              640: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+              },
+              1024: {
+                slidesPerView: 4,
+                spaceBetween: 24,
+              },
+              1280: {
+                slidesPerView: 5,
+                spaceBetween: 24,
+              },
+            }}
+            className="w-full !overflow-visible"
+          >
+            {BEST_PRODUCTS.map((product) => (
+              <SwiperSlide key={product.id}>
+                <div className="flex flex-col gap-4 group cursor-pointer">
+                  {/* Image Wrapper */}
+                  <div className="aspect-square rounded-[2rem] overflow-hidden bg-neutral-50 border border-neutral-100">
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  
+                  {/* Product Details */}
+                  <div className="space-y-1 px-1">
+                    <h3 className="font-bold text-base md:text-lg text-neutral-900 line-clamp-1 group-hover:text-neutral-700 transition-colors">
+                      {product.title}
+                    </h3>
+                    <p className="text-xs md:text-sm text-neutral-500 h-10 md:h-12 line-clamp-2 leading-relaxed">
+                      {product.desc}
+                    </p>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-white flex flex-col" dir="rtl">
@@ -193,188 +300,7 @@ export default function Home() {
 
       <Hero />
 
-      {/* Features strip — marquee bar */}
-      <section className="bg-neutral-950 py-8">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6">
-          {FEATURES.map((f) => (
-            <div key={f.title} className="flex items-center gap-3 text-white">
-              <span className="text-2xl">{f.icon}</span>
-              <div>
-                <p className="font-bold text-sm">{f.title}</p>
-                <p className="text-xs text-neutral-400 font-light">{f.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section className="py-20 bg-neutral-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionTitle
-            label="أقسامنا"
-            title="ماذا تبحث عنه؟"
-            description="اختر القسم المناسب لاحتياجك"
-            align="center"
-          />
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
-            {CATEGORIES.map((cat) => (
-              <Link
-                key={cat.id}
-                to={cat.link}
-                className="hover-card group card p-8 text-center space-y-4"
-              >
-                <span className="text-4xl">{cat.icon}</span>
-                <h3 className="text-xl font-black text-neutral-900 group-hover:text-neutral-700 transition-colors">
-                  {cat.title}
-                </h3>
-                <p className="text-sm text-neutral-500">{cat.desc}</p>
-                <span className="inline-flex items-center gap-1 text-neutral-900 font-bold text-sm">
-                  تصفح
-                  <svg
-                    className="w-4 h-4 rotate-180 group-hover:-translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    />
-                  </svg>
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured products */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <SectionTitle
-              label="الأكثر طلباً"
-              title="منتجات جاهزة مميزة"
-              description="تشكيلة واسعة من الهدايا والتغليف الجاهز"
-            />
-            <Link
-              to="/category/ready"
-              className="text-neutral-900 font-bold hover:underline shrink-0 underline-offset-4"
-            >
-              عرض الكل ←
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {READY_PRODUCTS.slice(0, 4).map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Custom products CTA — dark charcoal color block */}
-      <section className="py-20 bg-neutral-950 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-l from-neutral-800/20 to-transparent" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6 text-white">
-              <span className="inline-block px-3 py-1 bg-white/10 text-neutral-200 text-[11px] font-mono tracking-widest font-bold rounded-full uppercase">
-                التميز لك وحدك
-              </span>
-              <h2 className="text-3xl md:text-4xl font-black leading-tight tracking-tight">
-                صمّم هويتك واطبعها بجودة استثنائية
-              </h2>
-              <p className="text-neutral-400 leading-relaxed font-light">
-                كراتين، أكياس، ملصقات — ارفع تصميمك ونطبعه بأعلى المعايير. لا
-                تملك تصميماً؟ فريقنا الإبداعي في خدمتك.
-              </p>
-              <ul className="space-y-3">
-                {[
-                  "رفع تصاميمك بسهولة",
-                  "خيارات متعددة للخامات",
-                  "أسعار منافسة للكميات",
-                ].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-sm">
-                    <span className="w-5 h-5 rounded-full bg-white flex items-center justify-center text-neutral-900 text-xs font-black">
-                      ✓
-                    </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to="/category/custom"
-                className="btn-primary inline-flex mt-4 bg-white text-neutral-900 hover:bg-neutral-100"
-              >
-                ابدأ التخصيص الآن
-              </Link>
-            </div>
-            <div className="flex justify-center">
-              <div className="w-64 h-64 md:w-80 md:h-80 bg-white/5 rounded-3xl flex items-center justify-center border border-white/10">
-                <svg
-                  className="w-40 h-40 animate-float"
-                  viewBox="0 0 100 100"
-                  fill="none"
-                >
-                  <polygon
-                    points="50,20 85,38 50,56 15,38"
-                    fill="#ffffff"
-                    opacity="0.9"
-                  />
-                  <polygon
-                    points="15,38 50,56 50,88 15,70"
-                    fill="#ebebeb"
-                    opacity="0.5"
-                  />
-                  <polygon
-                    points="50,56 85,38 85,70 50,88"
-                    fill="#d4d4d4"
-                    opacity="0.4"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Wrapping service */}
-      <section className="py-20 bg-neutral-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionTitle
-            label="خدمة حصرية"
-            title="تغليف الهدايا من الباب للباب"
-            description="نستلم، نغلف، ونوصل — بكل احترافية"
-            align="center"
-          />
-          <div className="grid md:grid-cols-3 gap-6 mt-12 max-w-4xl mx-auto">
-            {WRAPPING_STEPS.map((step) => (
-              <div
-                key={step.num}
-                className={`card p-8 text-center space-y-4 ${step.highlight ? "border-neutral-900 border-2" : ""}`}
-              >
-                <span className="text-4xl font-black text-neutral-200">
-                  {step.num}
-                </span>
-                <h3 className="text-lg font-black text-neutral-900">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-neutral-500 font-light">
-                  {step.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Link to="/service/wrapping" className="btn-secondary px-10 py-4">
-              اطلب المندوب الآن
-            </Link>
-          </div>
-        </div>
-      </section>
+      <BestSellers />
 
       <Footer />
     </div>
