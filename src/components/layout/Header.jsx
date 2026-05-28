@@ -1,182 +1,256 @@
-import React, { useState, useEffect } from "react";
-import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import {
+  ClipboardList,
+  User,
+  ShoppingBasket,
+  ChevronDown,
+  Menu,
+  X,
+} from "lucide-react";
+
+const NAV_LINKS = [
+  { path: "/products", label: "المنتجات" },
+  { path: "/about", label: "من نحن" },
+  { path: "/contact", label: "التواصل" },
+];
+
+const SERVICE_LINKS = [
+  { path: "/category/ready", label: "منتجات جاهزة" },
+  { path: "/category/custom", label: "منتجات مخصصة" },
+  { path: "/service/wrapping", label: "تغليف الهدايا" },
+];
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [show, setShow] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const { getCartPositionsCount } = useCart();
   const location = useLocation();
 
-  // Store status logic (Open 9 AM to 10 PM)
-  const currentHour = new Date().getHours();
-  const isOpenNow = currentHour >= 9 && currentHour < 22;
+  const desktopDropdownRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
-  // Handle scroll to add shadow and hide on scroll down
   useEffect(() => {
-    const handleScroll = () => {
-      if (typeof window !== 'undefined') {
-        if (window.scrollY > lastScrollY && window.scrollY > 100) {
-          setShow(false); // Hide on scroll down
-        } else {
-          setShow(true);  // Show on scroll up
-        }
-        setLastScrollY(window.scrollY);
-        setIsScrolled(window.scrollY > 20);
-      }
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setIsOpen(false);
+    setServicesOpen(false);
   }, [location]);
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        desktopDropdownRef.current &&
+        !desktopDropdownRef.current.contains(event.target)
+      ) {
+      }
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const navLinkClass = ({ isActive }) =>
+    `text-sm font-semibold transition-colors hover:text-neutral-900 ${
+      isActive ? "text-neutral-900" : "text-neutral-500"
+    }`;
+
   return (
-    <header className={`w-full sticky top-0 z-50 font-sans transition-all duration-300 ${show ? 'translate-y-0' : '-translate-y-full'} ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm' : 'bg-white'}`} dir="rtl">
-      {/* 1. Announcement Bar */}
-      <div className={`text-white text-xs py-1.5 px-4 text-center font-medium ${isOpenNow ? 'bg-brand-green' : 'bg-neutral-800'}`}>
-        <span className="inline-flex items-center gap-1.5">
-          {isOpenNow ? (
-            <span>🟢 المتجر مفتوح الآن - نستقبل طلباتكم</span>
-          ) : (
-            <span>🔴 المتجر مغلق الآن - سيتم معالجة الطلبات أوقات العمل (9ص - 10م)</span>
-          )}
-        </span>
-      </div>
-
-      {/* 2. Main Header */}
+    <header
+      className={`sticky top-0 z-40 w-full transition-all duration-300 bg-white py-3 ${
+        isScrolled ? "border-b border-neutral-200 shadow-sm" : ""
+      }`}
+      dir="rtl"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 md:h-20 gap-4">
-          
-          {/* Right Side Icons (Start in RTL) */}
-          <div className="flex items-center gap-2 md:gap-4 shrink-0">
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              type="button"
-              className="md:hidden p-2 text-neutral-600 hover:text-brand-green transition-colors"
+        <div className="flex items-center justify-between gap-4">
+          <Link to="/" className="shrink-0">
+            <img
+              src="/logo.png"
+              alt="BOX LINE"
+              className="h-10 w-auto object-contain"
+            />
+          </Link>
+
+          <nav className="hidden lg:flex items-center gap-7">
+            <NavLink to="/products" className={navLinkClass}>
+              المنتجات
+            </NavLink>
+
+            <div className="relative group" ref={desktopDropdownRef}>
+              <button className="flex items-center gap-1 text-sm font-semibold text-neutral-500 hover:text-neutral-900 transition-colors">
+                الخدمات
+                <ChevronDown className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" />
+              </button>
+              <div className="absolute top-full right-0 pt-3 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 translate-y-1 group-hover:translate-y-0 z-50">
+                <div className="bg-white rounded-2xl shadow-xl border border-neutral-100 p-1.5 flex flex-col gap-0.5">
+                  {SERVICE_LINKS.map((s) => (
+                    <Link
+                      key={s.path}
+                      to={s.path}
+                      className="px-4 py-2.5 rounded-xl text-sm font-semibold text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 transition-colors"
+                    >
+                      {s.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <NavLink to="/about" className={navLinkClass}>
+              من نحن
+            </NavLink>
+            <NavLink to="/contact" className={navLinkClass}>
+              التواصل
+            </NavLink>
+          </nav>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              to="/orders"
+              className="hidden sm:flex p-2 text-neutral-500 hover:text-neutral-900 transition-colors rounded-xl hover:bg-neutral-100"
+              title="تتبع الطلبات"
             >
-              {isOpen ? (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </button>
+              <ClipboardList className="w-5 h-5" />
+            </Link>
 
-            {/* Search Icon (simplified) */}
-            <button className="text-neutral-500 hover:text-brand-green transition-colors hidden sm:block p-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
+            <Link
+              to="/login"
+              className="p-2 text-neutral-500 hover:text-neutral-900 transition-colors rounded-xl hover:bg-neutral-100"
+              title="تسجيل الدخول"
+            >
+              <User className="w-5 h-5" />
+            </Link>
 
-            {/* Cart Link */}
             <Link
               to="/cart"
-              className="relative p-2 text-neutral-600 hover:text-brand-green transition-colors flex items-center"
-              title="سلة المشتريات"
+              className="relative p-2.5 bg-neutral-900 text-white rounded-xl hover:bg-neutral-800 transition-colors flex items-center justify-center"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-              </svg>
+              <ShoppingBasket className="w-5 h-5" />
               {getCartPositionsCount() > 0 && (
-                <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold border-2 border-white">
+                <span className="absolute -top-1.5 -left-1.5 w-5 h-5 bg-black text-white rounded-full flex items-center justify-center text-[10px] font-black border-2 border-white">
                   {getCartPositionsCount()}
                 </span>
               )}
             </Link>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen(!isOpen);
+              }}
+              className="lg:hidden p-2 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100 rounded-xl transition-colors"
+              aria-label="فتح القائمة"
+            >
+              {isOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
           </div>
-
-          {/* Center: Desktop Navigation */}
-          <nav className="hidden md:flex flex-1 justify-center">
-            <ul className="flex items-center gap-8 text-sm font-semibold text-neutral-600">
-              <li>
-                <NavLink
-                  to="/category/ready"
-                  className={({ isActive }) =>
-                    `transition-colors duration-200 hover:text-brand-green ${isActive ? "text-brand-green font-bold" : ""}`
-                  }
-                >
-                  منتجات جاهزة
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/category/custom"
-                  className={({ isActive }) =>
-                    `transition-colors duration-200 hover:text-brand-green ${isActive ? "text-brand-green font-bold" : ""}`
-                  }
-                >
-                  منتجات مخصصة
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/service/wrapping"
-                  className={({ isActive }) =>
-                    `transition-colors duration-200 hover:text-brand-green ${isActive ? "text-brand-green font-bold" : ""}`
-                  }
-                >
-                  خدمة تغليف الهدايا
-                </NavLink>
-              </li>
-            </ul>
-          </nav>
-
-          {/* Left Side (End in RTL): Logo */}
-          <Link to="/" className="flex items-center shrink-0 group">
-            <img 
-              src="/logo.png" 
-              alt="Box Line Logo" 
-              className="h-10 md:h-16 w-auto object-contain transition-transform group-hover:scale-105"
-            />
-          </Link>
-
         </div>
       </div>
 
-      {/* 3. Mobile Menu Drawer */}
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-white border-b border-neutral-100 shadow-lg animate-fade-in-up">
-          <nav className="px-4 py-6 flex flex-col space-y-4">
+        <div
+          ref={mobileMenuRef}
+          className="absolute top-full left-0 w-full lg:hidden border-t border-neutral-100 bg-white shadow-lg z-50 animate-fade-in-up"
+        >
+          <nav className="flex flex-col px-4 py-3 gap-1">
             <NavLink
-              to="/category/ready"
+              to="/products"
               className={({ isActive }) =>
-                `text-base font-bold pb-4 border-b border-neutral-50 ${
-                  isActive ? "text-brand-green" : "text-neutral-600"
+                `px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                  isActive
+                    ? "bg-neutral-100 text-neutral-900"
+                    : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
                 }`
               }
             >
-              منتجات جاهزة للشراء
+              المنتجات
             </NavLink>
+
+            <div>
+              <button
+                onClick={() => setServicesOpen(!servicesOpen)}
+                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 transition-colors"
+              >
+                <span>الخدمات</span>
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              {servicesOpen && (
+                <div className="mr-4 mb-1 bg-neutral-50 rounded-xl border border-neutral-100 overflow-hidden">
+                  {SERVICE_LINKS.map((s) => (
+                    <NavLink
+                      key={s.path}
+                      to={s.path}
+                      className={({ isActive }) =>
+                        `block px-4 py-2.5 text-sm font-semibold transition-colors border-b border-neutral-100 last:border-0 ${
+                          isActive
+                            ? "text-neutral-900 bg-neutral-100"
+                            : "text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100/60"
+                        }`
+                      }
+                    >
+                      {s.label}
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <NavLink
-              to="/category/custom"
+              to="/about"
               className={({ isActive }) =>
-                `text-base font-bold pb-4 border-b border-neutral-50 ${
-                  isActive ? "text-brand-green" : "text-neutral-600"
+                `px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                  isActive
+                    ? "bg-neutral-100 text-neutral-900"
+                    : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
                 }`
               }
             >
-              منتجات قابلة للتخصيص
+              من نحن
             </NavLink>
+
             <NavLink
-              to="/service/wrapping"
+              to="/contact"
               className={({ isActive }) =>
-                `text-base font-bold pb-4 border-b border-neutral-50 ${
-                  isActive ? "text-brand-green" : "text-neutral-600"
+                `px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                  isActive
+                    ? "bg-neutral-100 text-neutral-900"
+                    : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
                 }`
               }
             >
-              خدمة تغليف الهدايا
+              التواصل
+            </NavLink>
+
+            <NavLink
+              to="/orders"
+              className={({ isActive }) =>
+                `px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                  isActive
+                    ? "bg-neutral-100 text-neutral-900"
+                    : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
+                }`
+              }
+            >
+              تتبع الطلبات
             </NavLink>
           </nav>
         </div>

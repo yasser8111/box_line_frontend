@@ -59,7 +59,7 @@ export default function Checkout() {
           </div>
           <h2 className="text-2xl font-black text-neutral-900">لا يمكن إتمام الطلب</h2>
           <p className="text-sm text-neutral-500">السلة فارغة. أضف منتجات طباعة مخصصة أولاً.</p>
-          <Link to="/" className="px-8 py-3 bg-brand-green text-white font-bold rounded-lg hover:bg-green-600 shadow-lg shadow-brand-green/20 transition-all">
+          <Link to="/" className="px-8 py-3 bg-neutral-900 text-white font-bold rounded-full hover:bg-neutral-800 shadow-md transition-all">
             تصفح خدمات الطباعة
           </Link>
         </main>
@@ -75,9 +75,9 @@ export default function Checkout() {
       {/* Breadcrumb */}
       <div className="bg-white border-b border-neutral-100 py-3 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-neutral-500">
-          <Link to="/" className="hover:text-brand-green">الرئيسية</Link>
+          <Link to="/" className="hover:text-neutral-900 transition-colors">الرئيسية</Link>
           <span>/</span>
-          <Link to="/cart" className="hover:text-brand-green">السلة</Link>
+          <Link to="/cart" className="hover:text-neutral-900 transition-colors">السلة</Link>
           <span>/</span>
           <span className="text-neutral-900 font-bold">إتمام الطلب والدفع</span>
         </div>
@@ -90,7 +90,7 @@ export default function Checkout() {
           <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in-up">
             <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl text-center space-y-6 animate-scale-in">
               {/* Success Icon */}
-              <div className="w-20 h-20 mx-auto bg-brand-green rounded-full flex items-center justify-center shadow-lg shadow-brand-green/30">
+              <div className="w-20 h-20 mx-auto bg-neutral-900 rounded-full flex items-center justify-center shadow-md">
                 <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                 </svg>
@@ -105,16 +105,15 @@ export default function Checkout() {
 
               {/* Order Number */}
               <div className="p-4 bg-neutral-50 rounded-2xl border border-neutral-100 space-y-3">
-                <span className="block text-xs text-neutral-400">رقم طلبك</span>
-                <span className="block text-3xl font-black text-brand-green tracking-wider">{orderNumber}</span>
-                <span className="block text-[10px] text-neutral-400">احتفظ بهذا الرقم لمتابعة طلبك</span>
+                <span className="block text-xs text-neutral-450">رقم طلبك</span>
+                <span className="block text-3xl font-black text-neutral-900 tracking-wider">{orderNumber}</span>
+                <span className="block text-[10px] text-neutral-450">احتفظ بهذا الرقم لمتابعة طلبك</span>
               </div>
 
               {/* QR Code Emulation */}
               <div className="flex flex-col items-center gap-2">
                 <div className="w-28 h-28 bg-neutral-900 rounded-xl flex items-center justify-center p-2">
                   <svg viewBox="0 0 100 100" className="w-full h-full">
-                    {/* Simple QR-like decorative pattern */}
                     <rect width="100" height="100" fill="#111" />
                     {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(row =>
                       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(col => (
@@ -124,12 +123,11 @@ export default function Checkout() {
                           y={row * 10 + 1}
                           width="8"
                           height="8"
-                          fill={(row + col) % 3 === 0 || (row * col) % 5 === 0 ? "#2fa134" : "#222"}
+                          fill={(row + col) % 3 === 0 || (row * col) % 5 === 0 ? "#888" : "#222"}
                           rx="1"
                         />
                       ))
                     )}
-                    {/* Corner finder patterns */}
                     <rect x="2" y="2" width="25" height="25" fill="none" stroke="#fff" strokeWidth="3" rx="3" />
                     <rect x="73" y="2" width="25" height="25" fill="none" stroke="#fff" strokeWidth="3" rx="3" />
                     <rect x="2" y="73" width="25" height="25" fill="none" stroke="#fff" strokeWidth="3" rx="3" />
@@ -161,7 +159,7 @@ export default function Checkout() {
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={() => navigate("/")}
-                  className="flex-1 py-3 bg-brand-green hover:bg-green-600 text-white font-bold rounded-xl transition-all text-sm"
+                  className="flex-1 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded-full transition-all text-sm"
                 >
                   العودة للرئيسية
                 </button>
@@ -169,7 +167,7 @@ export default function Checkout() {
                   href={`https://wa.me/966920001234?text=مرحباً، أود متابعة طلبي رقم ${orderNumber}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 py-3 border border-neutral-200 text-neutral-700 font-bold rounded-xl transition-all text-sm text-center hover:bg-neutral-50"
+                  className="flex-1 py-3 border border-neutral-200 text-neutral-700 font-bold rounded-full transition-all text-sm text-center hover:bg-neutral-50"
                 >
                   تابع عبر واتساب
                 </a>
@@ -183,13 +181,13 @@ export default function Checkout() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
               {/* Form Fields (8 cols) */}
-              <div className="lg:col-span-8 space-y-8">
+              <div className="lg:col-span-8 space-y-6">
                 <h1 className="text-2xl font-black text-neutral-900">إتمام طلب الطباعة والدفع</h1>
 
                 {/* Customer Information */}
-                <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm p-6 space-y-5">
+                <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm p-6 space-y-5">
                   <h2 className="text-base font-bold text-neutral-900 flex items-center gap-2">
-                    <span className="w-7 h-7 rounded-full bg-brand-green text-white flex items-center justify-center text-xs font-black">1</span>
+                    <span className="w-7 h-7 rounded-full bg-neutral-900 text-white flex items-center justify-center text-xs font-black">1</span>
                     معلومات العميل
                   </h2>
 
@@ -202,7 +200,7 @@ export default function Checkout() {
                         onChange={(e) => setName(e.target.value)}
                         required
                         placeholder="مثال: محمد العتيبي"
-                        className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green text-sm transition-all bg-neutral-50/50"
+                        className="w-full px-4 py-3 rounded-full border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-900/20 focus:border-neutral-900 text-sm transition-all bg-neutral-50/50"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -213,7 +211,7 @@ export default function Checkout() {
                         onChange={(e) => setPhone(e.target.value)}
                         required
                         placeholder="05XXXXXXXX"
-                        className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green text-sm transition-all bg-neutral-50/50"
+                        className="w-full px-4 py-3 rounded-full border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-900/20 focus:border-neutral-900 text-sm transition-all bg-neutral-50/50"
                       />
                     </div>
                     <div className="sm:col-span-2 space-y-1.5">
@@ -223,16 +221,16 @@ export default function Checkout() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="email@example.com"
-                        className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green text-sm transition-all bg-neutral-50/50"
+                        className="w-full px-4 py-3 rounded-full border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-900/20 focus:border-neutral-900 text-sm transition-all bg-neutral-50/50"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Shipping Address */}
-                <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm p-6 space-y-5">
+                <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm p-6 space-y-5">
                   <h2 className="text-base font-bold text-neutral-900 flex items-center gap-2">
-                    <span className="w-7 h-7 rounded-full bg-brand-green text-white flex items-center justify-center text-xs font-black">2</span>
+                    <span className="w-7 h-7 rounded-full bg-neutral-900 text-white flex items-center justify-center text-xs font-black">2</span>
                     عنوان الشحن والتوصيل
                   </h2>
 
@@ -242,7 +240,7 @@ export default function Checkout() {
                       <select
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green text-sm transition-all bg-neutral-50/50"
+                        className="w-full px-4 py-3 rounded-full border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-900/20 focus:border-neutral-900 text-sm transition-all bg-neutral-50/50"
                       >
                         <option value="الرياض">الرياض</option>
                         <option value="جدة">جدة</option>
@@ -264,7 +262,7 @@ export default function Checkout() {
                         value={district}
                         onChange={(e) => setDistrict(e.target.value)}
                         placeholder="مثال: حي الملقا"
-                        className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green text-sm transition-all bg-neutral-50/50"
+                        className="w-full px-4 py-3 rounded-full border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-900/20 focus:border-neutral-900 text-sm transition-all bg-neutral-50/50"
                       />
                     </div>
                     <div className="sm:col-span-2 space-y-1.5">
@@ -275,16 +273,16 @@ export default function Checkout() {
                         required
                         rows="2"
                         placeholder="اسم الشارع، رقم المبنى، الدور، أقرب معلم..."
-                        className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green text-sm transition-all bg-neutral-50/50 resize-none"
+                        className="w-full px-4 py-3 rounded-2xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-900/20 focus:border-neutral-900 text-sm transition-all bg-neutral-50/50 resize-none"
                       ></textarea>
                     </div>
                   </div>
                 </div>
 
                 {/* Payment Method */}
-                <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm p-6 space-y-5">
+                <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm p-6 space-y-5">
                   <h2 className="text-base font-bold text-neutral-900 flex items-center gap-2">
-                    <span className="w-7 h-7 rounded-full bg-brand-green text-white flex items-center justify-center text-xs font-black">3</span>
+                    <span className="w-7 h-7 rounded-full bg-neutral-900 text-white flex items-center justify-center text-xs font-black">3</span>
                     طريقة الدفع
                   </h2>
 
@@ -293,15 +291,15 @@ export default function Checkout() {
                       { id: "mada", label: "بطاقة مدى", badge: "mada", badgeColor: "text-blue-800 bg-blue-50" },
                       { id: "visa", label: "فيزا / ماستركارد", badge: "VISA", badgeColor: "text-blue-900 bg-blue-50" },
                       { id: "tamara", label: "تمارا - قسّط مشترياتك", badge: "tamara", badgeColor: "text-amber-700 bg-amber-50" },
-                      { id: "tabby", label: "تابي - اشتر الآن ادفع لاحقاً", badge: "tabby", badgeColor: "text-black bg-emerald-50" },
+                      { id: "tabby", label: "تابي - اشتر الآن ادفع لاحقاً", badge: "tabby", badgeColor: "text-neutral-950 bg-neutral-100" },
                       { id: "cod", label: "الدفع عند الاستلام (COD)", badge: "COD", badgeColor: "text-neutral-700 bg-neutral-100" },
                     ].map((method) => (
                       <label
                         key={method.id}
-                        className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all ${
+                        className={`flex items-center gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
                           paymentMethod === method.id
-                            ? "border-brand-green bg-brand-green/5 ring-1 ring-brand-green/20"
-                            : "border-neutral-200 hover:border-neutral-300"
+                            ? "border-neutral-900 bg-neutral-50 ring-1 ring-neutral-900/10"
+                            : "border-neutral-200 hover:border-neutral-900"
                         }`}
                       >
                         <input
@@ -310,7 +308,7 @@ export default function Checkout() {
                           value={method.id}
                           checked={paymentMethod === method.id}
                           onChange={(e) => setPaymentMethod(e.target.value)}
-                          className="accent-brand-green"
+                          className="accent-neutral-900"
                         />
                         <div className="flex-grow">
                           <span className="text-sm font-bold text-neutral-900">{method.label}</span>
@@ -324,9 +322,9 @@ export default function Checkout() {
                 </div>
 
                 {/* Order Notes */}
-                <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm p-6 space-y-4">
+                <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm p-6 space-y-4">
                   <h2 className="text-base font-bold text-neutral-900 flex items-center gap-2">
-                    <span className="w-7 h-7 rounded-full bg-neutral-200 text-neutral-600 flex items-center justify-center text-xs font-black">4</span>
+                    <span className="w-7 h-7 rounded-full bg-neutral-900 text-white flex items-center justify-center text-xs font-black">4</span>
                     ملاحظات إضافية (اختياري)
                   </h2>
                   <textarea
@@ -334,23 +332,23 @@ export default function Checkout() {
                     onChange={(e) => setNotes(e.target.value)}
                     rows="3"
                     placeholder="أي تعليمات خاصة بالطلب أو الشحن أو التوقيت..."
-                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-green/40 focus:border-brand-green text-sm transition-all bg-neutral-50/50 resize-none"
+                    className="w-full px-4 py-3 rounded-2xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-900/20 focus:border-neutral-900 text-sm transition-all bg-neutral-50/50 resize-none"
                   ></textarea>
                 </div>
               </div>
 
               {/* Order Summary Sidebar (4 cols) */}
               <div className="lg:col-span-4 lg:sticky lg:top-28 space-y-5">
-                <div className="bg-white rounded-2xl border border-neutral-100 shadow-sm p-6 space-y-5">
+                <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm p-6 space-y-5">
                   <h2 className="text-lg font-black text-neutral-900 border-b border-neutral-50 pb-3">ملخص الفاتورة</h2>
 
                   {/* Order items compact list */}
                   <div className="space-y-3 max-h-64 overflow-y-auto">
                     {cart.map((item) => (
-                      <div key={item.cartItemId} className="flex items-center gap-3 p-3 bg-neutral-50 rounded-xl border border-neutral-100">
+                      <div key={item.cartItemId} className="flex items-center gap-3 p-3 bg-neutral-50 rounded-2xl border border-neutral-100">
                         <div className="w-10 h-10 bg-neutral-900 rounded-lg flex items-center justify-center shrink-0">
                           <svg className="w-full h-full p-1" viewBox="0 0 100 100" fill="none">
-                            <polygon points="50,22 80,35 50,48 20,35" fill="#2fa134" opacity="0.8" />
+                            <polygon points="50,22 80,35 50,48 20,35" fill="#555" opacity="0.8" />
                             <polygon points="50,48 80,35 80,68 50,81" fill="#fff" opacity="0.8" />
                           </svg>
                         </div>
@@ -358,7 +356,7 @@ export default function Checkout() {
                           <span className="block text-xs font-bold text-neutral-900 line-clamp-1">{item.product.name}</span>
                           <span className="block text-[10px] text-neutral-400">{item.quantity} قطعة</span>
                         </div>
-                        <span className="text-xs font-black text-brand-green whitespace-nowrap">{item.price.toFixed(2)} ر.س</span>
+                        <span className="text-xs font-black text-neutral-900 whitespace-nowrap">{item.price.toFixed(2)} ر.س</span>
                       </div>
                     ))}
                   </div>
@@ -371,7 +369,7 @@ export default function Checkout() {
                     </div>
                     <div className="flex justify-between">
                       <span>الشحن:</span>
-                      <span className={`font-bold ${shipping === 0 ? "text-brand-green" : "text-neutral-900"}`}>
+                      <span className="font-bold text-neutral-900">
                         {shipping === 0 ? "مجاناً" : `${shipping.toFixed(2)} ريال`}
                       </span>
                     </div>
@@ -381,13 +379,13 @@ export default function Checkout() {
                     </div>
                     <div className="flex justify-between items-end border-t border-neutral-100 pt-4">
                       <span className="text-base font-bold">الإجمالي النهائي:</span>
-                      <span className="text-2xl font-black text-brand-green">{grandTotal.toFixed(2)} ريال</span>
+                      <span className="text-2xl font-black text-neutral-900">{grandTotal.toFixed(2)} ريال</span>
                     </div>
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full py-4 bg-brand-green hover:bg-green-600 text-white font-bold rounded-xl shadow-lg shadow-brand-green/20 transition-all text-sm flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded-full shadow-md transition-all text-sm flex items-center justify-center gap-2"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
@@ -396,7 +394,7 @@ export default function Checkout() {
                   </button>
 
                   <p className="text-[10px] text-neutral-400 text-center">
-                    بالضغط على "تأكيد الطلب" فإنك توافق على <Link to="/terms" className="text-brand-green underline">الشروط والأحكام</Link> وسياسة الاستخدام.
+                    بالضغط على "تأكيد الطلب" فإنك توافق على <Link to="/terms" className="text-neutral-900 underline">الشروط والأحكام</Link> وسياسة الاستخدام.
                   </p>
                 </div>
               </div>
