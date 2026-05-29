@@ -1,5 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { LayoutGrid } from "lucide-react";
+
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 
@@ -7,12 +9,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 
-
 export function Hero() {
   const HERO_PRODUCTS = [
     {
       id: 1,
-      image: "/imges/product_1.png",
+      image: "/imges/product_5.png",
       alt: "تغليف منتجات",
     },
     {
@@ -34,33 +35,10 @@ export function Hero() {
         {/* Top Content: Title & Stats */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-8">
           <div className="w-full md:max-w-3xl space-y-4">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-light text-neutral-900 leading-tight md:leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-normal text-neutral-900 leading-tight md:leading-tight">
               هديتك تحمل شعورًا، <br />
               ونحن نمنحه{" "}
-              <span className="font-black text-green-600 inline-block">جمـــالًا</span>
-              
-              {/* Desktop Button with Arrow */}
-              <span className="hidden md:inline-flex items-center gap-4 mr-4 whitespace-nowrap">
-                <svg
-                  className="w-10 h-6 text-neutral-950 shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                <Link
-                  to="/contact"
-                  className="bg-neutral-950 text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-neutral-800 transition-colors"
-                >
-                  تواصل معنا
-                </Link>
-              </span>
+              <span className="font-black text-green-600 inline-block">جمـــــالًا</span>
             </h1>
 
             {/* Mobile Button: Below text, no arrow */}
@@ -114,7 +92,7 @@ export function Hero() {
           {HERO_PRODUCTS.map((product) => (
             <div
               key={product.id}
-              className="aspect-square rounded-4xl lg:rounded-[2.5rem] overflow-hidden group bg-neutral-50 border border-neutral-100"
+              className="aspect-square rounded-3xl lg:rounded-[2.5rem] overflow-hidden group bg-neutral-50 border border-neutral-100"
             >
               <img
                 src={product.image}
@@ -140,7 +118,7 @@ export function Hero() {
           >
             {HERO_PRODUCTS.map((product) => (
               <SwiperSlide key={product.id}>
-                <div className="aspect-square rounded-4xl overflow-hidden bg-neutral-50 border border-neutral-100">
+                <div className="aspect-square rounded-3xl overflow-hidden bg-neutral-50 border border-neutral-100">
                   <img
                     src={product.image}
                     alt={product.alt}
@@ -158,7 +136,7 @@ export function Hero() {
 }
 
 export function BestSellers() {
-  const swiperRef = useRef(null);
+  const [swiperInstance, setSwiperInstance] = useState(null);
 
   const BEST_PRODUCTS = [
     { 
@@ -212,7 +190,7 @@ export function BestSellers() {
           {/* Custom Navigation Buttons */}
           <div className="flex items-center gap-2" dir="ltr">
             <button 
-              onClick={() => swiperRef.current?.swiper?.slidePrev()}
+              onClick={() => swiperInstance?.slidePrev()}
               className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-800 hover:bg-neutral-50 active:scale-95 transition-all"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -220,10 +198,10 @@ export function BestSellers() {
               </svg>
             </button>
             <button 
-              onClick={() => swiperRef.current?.swiper?.slideNext()}
+              onClick={() => swiperInstance?.slideNext()}
               className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-800 hover:bg-neutral-50 active:scale-95 transition-all"
             >
-              
+
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
@@ -234,7 +212,7 @@ export function BestSellers() {
         {/* Responsive Swiper Carousel */}
         <div className="w-full overflow-hidden">
           <Swiper
-            ref={swiperRef}
+            onSwiper={setSwiperInstance}
             modules={[Autoplay, Navigation]}
             spaceBetween={24}
             loop={true}
@@ -260,13 +238,13 @@ export function BestSellers() {
                 spaceBetween: 24,
               },
             }}
-            className="w-full !overflow-visible"
+            className="w-full overflow-visible!"
           >
             {BEST_PRODUCTS.map((product) => (
               <SwiperSlide key={product.id}>
                 <div className="flex flex-col gap-4 group cursor-pointer">
                   {/* Image Wrapper */}
-                  <div className="aspect-square rounded-[2rem] overflow-hidden bg-neutral-50 border border-neutral-100">
+                  <div className="aspect-square rounded-4xl overflow-hidden bg-neutral-50 border border-neutral-100">
                     <img
                       src={product.image}
                       alt={product.title}
@@ -294,6 +272,257 @@ export function BestSellers() {
   );
 }
 
+export function About() {
+  const [openIndex, setOpenIndex] = useState(2);
+
+  const ACCORDION_DATA = [
+    {
+      title: "جودة لا تضاهى",
+      desc: "نختار خامات التغليف والمنتجات بعناية فائقة لضمان تقديم هدية تليق بمشاعركم وتدوم ذكراها طويلاً.",
+    },
+    {
+      title: "استدامة وجمال",
+      desc: "نهتم بالبيئة بقدر اهتمامنا بالجمال، ونوفر خيارات تغليف صديقة للبيئة ومصنعة من مواد مستدامة عالية الفخامة.",
+    },
+    {
+      title: "تنوع فريد ومميز",
+      desc: "نؤمن بأن لكل هدية قصة، لذلك نقدم تشكيلة واسعة من الصناديق، الباقات، والتنسيقات التي تناسب جميع الأذواق والمناسبات.",
+    },
+    {
+      title: "إرث من التميز",
+      desc: "خبرتنا الطويلة في عالم الهدايا تجعلنا الخيار الأول لمن يبحث عن الاحترافية، الدقة، واللمسة اليدوية الساحرة.",
+    },
+  ];
+
+  return (
+    <section className="bg-white py-12 lg:py-20 overflow-hidden" dir="rtl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-neutral-50 rounded-4xl lg:rounded-4xl p-6 md:p-10">
+          
+          <div className="mb-8 max-w-xl">
+            <h2 className="text-3xl md:text-4xl font-black text-neutral-900 mb-4">
+              لماذا تختارنا؟
+            </h2>
+            <p className="text-sm md:text-base text-neutral-500 leading-relaxed">
+              نفخر بتقديم منتجات وتنسيقات هدايا تفوق توقعاتكم، حيث تخضع كل قطعة لمعايير جودة صارمة لضمان إدخال البهجة والسرور على قلوب أحبابكم.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+            <div className="relative aspect-square lg:aspect-auto min-h-[300px] lg:min-h-[400px] rounded-3xl lg:rounded-4xl overflow-hidden">
+              <img
+                src="/logo.png"
+                alt="لماذا تختارنا"
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            <div className="flex flex-col justify-center space-y-4">
+              {ACCORDION_DATA.map((item, index) => {
+                const isOpen = openIndex === index;
+                return (
+                  <div key={index} className="border-b border-neutral-200 pb-4 last:border-0 last:pb-0">
+                    <button
+                      onClick={() => setOpenIndex(isOpen ? null : index)}
+                      className="w-full flex items-center justify-between py-2 text-right group"
+                    >
+                      <span className="font-bold text-base md:text-lg text-neutral-900 group-hover:text-neutral-700 transition-colors">
+                        {item.title}
+                      </span>
+                      <span className="text-xl font-light text-neutral-900 mr-4 shrink-0">
+                        {isOpen ? "−" : "+"}
+                      </span>
+                    </button>
+                    <div
+                      className={`grid transition-all duration-300 ease-in-out ${
+                        isOpen ? "grid-rows-[1fr] opacity-100 pt-2" : "grid-rows-[0fr] opacity-0"
+                      }`}
+                    >
+                      <div className="overflow-hidden">
+                        <p className="text-xs md:text-sm text-neutral-500 leading-relaxed max-w-xl">
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function OurProducts() {
+  const PRODUCTS = [
+    {
+      id: "ready-1",
+      title: "صندوق السعادة الفاخر",
+      desc: "تنسيق متكامل يجمع بين الفخامة والأناقة ليناسب جميع مناسباتكم السعيدة والخاصة.",
+      price: "150 ر.س",
+      image: "/imges/product_1.png",
+      to: "/product/ready-1"
+    },
+    {
+      id: "custom-1",
+      title: "صندوق الذكريات الخشبي",
+      desc: "محفور يدوياً بدقة عالية ليحفظ أدق تفاصيل ولحظات العمر الجميلة والمميزة.",
+      price: "180 ر.س",
+      image: "/imges/product_2.png",
+      to: "/product/custom-1"
+    },
+    {
+      id: "royal-box",
+      title: "تنسيق ملكي خاص",
+      desc: "مجموعة حصرية مصممة خصيصاً للشخصيات المميزة لتترك انطباعاً ساحراً لا ينسى.",
+      price: "290 ر.س",
+      image: "/imges/product_3.png",
+      to: "/product/royal-box"
+    },
+    {
+      id: "flowers-package",
+      title: "باقة ورد جوري طبيعي",
+      desc: "تنسيق كلاسيكي مذهل من أجود أنواع الورد الطبيعي لتعبر عن أصدق وأرقى المشاعر.",
+      price: "95 ر.س",
+      image: "/imges/product_4.png",
+      to: "/product/flowers-package"
+    },
+    {
+      id: "perfume-set-1",
+      title: "مجموعة الاسترخاء العطرية",
+      desc: "تحتوي على روائح مهدئة ومختارة بعناية فائقة لتجربة استرخاء فريدة ومثالية.",
+      price: "210 ر.س",
+      image: "/imges/product_5.png",
+      to: "/product/perfume-set"
+    },
+    {
+      id: "perfume-set-2",
+      title: "مجموعة الاسترخاء العطرية",
+      desc: "تحتوي على روائح مهدئة ومختارة بعناية فائقة لتجربة استرخاء فريدة ومثالية.",
+      price: "210 ر.س",
+      image: "/imges/product_5.png",
+      to: "/product/perfume-set"
+    },
+    {
+      id: "perfume-set-3",
+      title: "مجموعة الاسترخاء العطرية",
+      desc: "تحتوي على روائح مهدئة ومختارة بعناية فائقة لتجربة استرخاء فريدة ومثالية.",
+      price: "210 ر.س",
+      image: "/imges/product_5.png",
+      to: "/product/perfume-set"
+    },
+    {
+      id: "perfume-set-4",
+      title: "مجموعة الاسترخاء العطرية",
+      desc: "تحتوي على روائح مهدئة ومختارة بعناية فائقة لتجربة استرخاء فريدة ومثالية.",
+      price: "210 ر.س",
+      image: "/imges/product_5.png",
+      to: "/product/perfume-set"
+    },
+    {
+      id: "perfume-set-5",
+      title: "مجموعة الاسترخاء العطرية",
+      desc: "تحتوي على روائح مهدئة ومختارة بعناية فائقة لتجربة استرخاء فريدة ومثالية.",
+      price: "210 ر.س",
+      image: "/imges/product_5.png",
+      to: "/product/perfume-set"
+    },
+    {
+      id: "perfume-set-6",
+      title: "مجموعة الاسترخاء العطرية",
+      desc: "تحتوي على روائح مهدئة ومختارة بعناية فائقة لتجربة استرخاء فريدة ومثالية.",
+      price: "210 ر.س",
+      image: "/imges/product_5.png",
+      to: "/product/perfume-set"
+    }
+  ];
+
+  // حساب عدد المنتجات المطلوبة فورياً لتجنب مشاكل الأداء
+  const [limit, setLimit] = useState(window.innerWidth < 640 ? 8 : 10);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setLimit(window.innerWidth < 640 ? 8 : 10);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return (
+    <section className="bg-white py-12 lg:py-20 overflow-hidden" dir="rtl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
+        <div className="mb-10 md:mb-14">
+          <div className="space-y-3">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-neutral-900 tracking-tight">
+              تصفح منتجاتنا
+            </h2>
+            <p className="text-sm md:text-base text-neutral-500 max-w-xl font-light leading-relaxed">
+              اكتشف عالمًا من الأناقة والخيارات المتنوعة، واطلع على أحدث تشكيلاتنا من الهدايا الجاهزة والمصممة بعناية فائقة.
+            </p>
+          </div>
+        </div>
+
+        {/* Responsive Grid Layout */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
+          {PRODUCTS.slice(0, limit).map((product) => (
+            <Link 
+              key={product.id} 
+              to={product.to}
+              className="flex flex-col gap-3 group cursor-pointer"
+            >
+              {/* Card Image - Fixed Square */}
+              <div className="aspect-square rounded-2xl sm:rounded-[2rem] overflow-hidden bg-neutral-50 border border-neutral-100 relative">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
+              
+              {/* Card Details */}
+              <div className="space-y-1.5 px-1">
+                {/* Title & Price Row Container */}
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="font-bold text-sm sm:text-base md:text-lg text-neutral-900 transition-colors group-hover:text-neutral-700 line-clamp-1 flex-1">
+                    {product.title}
+                  </h3>
+                  <span className="text-[10px] sm:text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full shrink-0 whitespace-nowrap">
+                    {product.price}
+                  </span>
+                </div>
+                
+                {/* Description: Exactly 2 lines layout */}
+                <p className="text-[11px] sm:text-xs md:text-sm text-neutral-500 leading-relaxed font-light h-8 sm:h-9 md:h-10 line-clamp-2">
+                  {product.desc}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Footer Link - Displayed centered below the grid */}
+        <div className="mt-12 md:mt-16 flex justify-center">
+          <Link 
+            to="/products" 
+            className="inline-flex items-center gap-2 text-sm font-medium text-neutral-900 hover:text-neutral-700 transition-colors hover:border-b border-neutral-900 pb-1"
+          >
+            <span>عرض جميع المنتجات</span>
+            <LayoutGrid className="w-4 h-4" />
+          </Link>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-white flex flex-col" dir="rtl">
@@ -302,6 +531,10 @@ export default function Home() {
       <Hero />
 
       <BestSellers />
+
+      <OurProducts />
+
+      <About />
 
       <Footer />
     </div>
