@@ -1,0 +1,46 @@
+{
+  "products": {
+    "hero": [
+      { "id": 1, "image": "/imges/product_5.png", "alt": "تغليف منتجات" },
+      { "id": 2, "image": "/imges/product_2.png", "alt": "صناديق هدايا" },
+      { "id": 3, "image": "/imges/product_3.png", "alt": "تغليف فاخر" }
+    ],
+    "best_sellers": [
+      { "id": 1, "image": "/imges/product_1.png", "title": "صندوق السعادة الفاخر", "desc": "تنسيق متكامل يجمع بين الفخامة والأناقة ليناسب جميع مناسباتكم السعيدة." },
+      { "id": 2, "image": "/imges/product_2.png", "title": "مجموعة الاسترخاء العطرية", "desc": "تحتوي على روائح مهدئة ومختارة بعناية لتجربة استرخاء فريدة ومثالية." },
+      { "id": 3, "image": "/imges/product_3.png", "title": "تغليف كلاسيكي راقي", "desc": "لمسات يدوية دقيقة بخامات فخمة تضفي على هديتك رونقاً جذاباً وساحراً." },
+      { "id": 4, "image": "/imges/product_4.png", "title": "باقة ورد جوري طبيعي", "desc": "تنسيق كلاسيكي مذهل من أجود أنواع الورد الطبيعي لتعبر عن أصدق المشاعر." },
+      { "id": 5, "image": "/imges/product_5.png", "title": "صندوق الذكريات الخشبي", "desc": "محفور يدوياً بدقة عالية ليحفظ أدق تفاصيل ولحظات العمر الجميلة." },
+      { "id": 6, "image": "/imges/product_6.png", "title": "تنسيق ملكي خاص", "desc": "مجموعة حصرية مصممة خصيصاً للشخصيات المميزة لتترك انطباعاً لا ينسى." }
+    ],
+    "ready": [
+      { "id": "ready-bag-1", "name": "أكياس هدايا فاخرة (وردي)", "price": 15, "badge": "الأكثر مبيعاً", "category": "ready", "image": "/imges/product_1.png" },
+      { "id": "ready-box-1", "name": "صندوق مجوهرات مخملي", "price": 35, "badge": "إصدار محدود", "category": "ready", "image": "/imges/product_2.png" },
+      { "id": "ready-wrapping-paper", "name": "رول تغليف هدايا مورد", "price": 25, "category": "ready", "image": "/imges/product_3.png" },
+      { "id": "ready-card-1", "name": "كروت تهنئة (مجموعة 5 قطع)", "price": 20, "category": "ready", "image": "/imges/product_4.png" },
+      { "id": "ready-bag-2", "name": "كيس هدايا كرافت كلاسيك", "price": 10, "category": "ready", "image": "/imges/product_5.png" },
+      { "id": "ready-box-2", "name": "صندوق هدايا بنافذة شفافة", "price": 22, "badge": "جديد", "category": "ready", "image": "/imges/product_6.png" },
+      { "id": "ready-bag-3", "name": "أكياس هدايا فاخرة (أزرق)", "price": 15, "category": "ready", "image": "/imges/product_1.png" },
+      { "id": "ready-box-3", "name": "صندوق هدايا خشبي صغير", "price": 40, "category": "ready", "image": "/imges/product_2.png" },
+      { "id": "ready-ribbon-1", "name": "شريط ستان أحمر عريض", "price": 12, "category": "ready", "image": "/imges/product_3.png" },
+      { "id": "ready-card-2", "name": "كرت تهنئة زواج فاخر", "price": 5, "category": "ready", "image": "/imges/product_4.png" }
+    ],
+    "custom": [
+      { "id": "mailer-box", "name": "كرتون بريدي مطبوع بشعارك", "price": 4.5, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_4.png" },
+      { "id": "gift-box", "name": "علب هدايا فاخرة مخصصة", "price": 8.5, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_5.png" },
+      { "id": "luxury-bags", "name": "أكياس تسوق ورقية مطبوعة", "price": 3.2, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_6.png" },
+      { "id": "round-stickers", "name": "ملصقات دائرية مخصصة", "price": 0.25, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_1.png" },
+      { "id": "party-sheets", "name": "أوراق ثيمات ومناسبات", "price": 1.2, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_2.png" },
+      { "id": "business-cards", "name": "كروت عمل شخصية فاخرة", "price": 0.8, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_3.png" },
+      { "id": "custom-tape", "name": "شريط لاصق بهويتك التجارية", "price": 6.0, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_4.png" },
+      { "id": "tissue-paper", "name": "ورق حشو مطبوع لحماية المنتجات", "price": 1.5, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_5.png" },
+      { "id": "thank-you-cards", "name": "كروت شكر مخصصة للعملاء", "price": 0.5, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_6.png" }
+    ]
+  },
+  "categories": [
+    { "id": "ready", "title": "منتجات جاهزة", "desc": "أكياس وعلب وكروت هدايا جاهزة للتوصيل الفوري", "link": "/category/ready", "icon": "🎁" },
+    { "id": "custom", "title": "منتجات مخصصة", "desc": "صمّم تغليفك واطبعه بجودة استثنائية", "link": "/category/custom", "icon": "✨" },
+    { "id": "wrapping", "title": "تغليف الهدايا", "desc": "خدمة من الباب للباب — نستلم ونغلف ونوصل", "link": "/service/wrapping", "icon": "📦" }
+  ],
+  "users": []
+}
