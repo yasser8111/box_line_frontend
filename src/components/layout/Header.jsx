@@ -10,12 +10,6 @@ import {
   X,
 } from "lucide-react";
 
-const NAV_LINKS = [
-  { path: "/products", label: "المنتجات" },
-  { path: "/about", label: "من نحن" },
-  { path: "/contact", label: "التواصل" },
-];
-
 const SERVICE_LINKS = [
   { path: "/category/ready", label: "منتجات جاهزة" },
   { path: "/category/custom", label: "منتجات مخصصة" },
@@ -69,7 +63,7 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-all duration-300 bg-white py-3 ${
+      className={`fixed top-0 right-0 left-0 z-50 w-full transition-all duration-300 bg-white py-3 ${
         isScrolled ? "border-b border-neutral-200 shadow-sm" : ""
       }`}
       dir="rtl"
