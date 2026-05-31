@@ -1,36 +1,36 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'Thmanyah Sans';
-  src: url('/fonts/thmanyahsans-Light.otf') format('opentype');
+  font-family: "Thmanyah Sans";
+  src: url("/fonts/thmanyahsans-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Thmanyah Sans';
-  src: url('/fonts/thmanyahsans-Regular.otf') format('opentype');
+  font-family: "Thmanyah Sans";
+  src: url("/fonts/thmanyahsans-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Thmanyah Sans';
-  src: url('/fonts/thmanyahsans-Medium.otf') format('opentype');
+  font-family: "Thmanyah Sans";
+  src: url("/fonts/thmanyahsans-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Thmanyah Sans';
-  src: url('/fonts/thmanyahsans-Bold.otf') format('opentype');
+  font-family: "Thmanyah Sans";
+  src: url("/fonts/thmanyahsans-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Thmanyah Sans';
-  src: url('/fonts/thmanyahsans-Black.otf') format('opentype');
+  font-family: "Thmanyah Sans";
+  src: url("/fonts/thmanyahsans-Black.otf") format("opentype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -53,27 +53,91 @@
   --color-block-silver: #ebebeb;
   --color-block-medium-gray: #d4d4d4;
   --color-block-dark-gray: #1a1a1a;
-
+  --animate-fade-in-down: fade-in-down 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   --animate-fade-in-up: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   --animate-slide-in: slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   --animate-scale-in: scale-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   --animate-float: float 5s ease-in-out infinite;
+  --animate-toast-enter-skew: toast-enter-skew 0.5s
+    cubic-bezier(0.22, 1.2, 0.36, 1) forwards;
+  --animate-toast-exit-skew: toast-exit-skew 0.38s
+    cubic-bezier(0.55, 0, 1, 0.45) forwards;
+
+  @keyframes toast-enter {
+    0% {
+      opacity: 0;
+      transform: translateY(100%) scale(0);
+    }
+    55% {
+      opacity: 1;
+      transform: translateY(-3%) scale(1);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes toast-exit {
+    0% {
+      opacity: 1;
+      transform: translateY(0) skewY(0deg) scale(1);
+      filter: blur(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-50%) skewY(-10deg) scale(0.8);
+      filter: blur(8px);
+    }
+  }
+
+  @keyframes fade-in-down {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
   @keyframes fade-in-up {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   @keyframes slide-in {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
   }
   @keyframes scale-in {
-    from { opacity: 0; transform: scale(0.96); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
   @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
   }
 }
 
@@ -85,10 +149,19 @@ body {
   scroll-behavior: smooth;
 }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #0a0a0a; border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background: #262626; }
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #0a0a0a;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #262626;
+}
 
 .glass {
   background: rgba(255, 255, 255, 0.85);
@@ -98,7 +171,9 @@ body {
 }
 
 .hover-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 .hover-card:hover {
   transform: translateY(-4px);
@@ -128,10 +203,27 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 30% 50%, rgba(0, 0, 0, 0.08) 0%, transparent 60%);
+  background: radial-gradient(
+    ellipse at 30% 50%,
+    rgba(0, 0, 0, 0.08) 0%,
+    transparent 60%
+  );
   pointer-events: none;
 }
 
 .card {
   @apply bg-white rounded-3xl border border-neutral-100 shadow-sm transition-all duration-200;
+}
+
+.toast-skew-enter {
+  transform-origin: center right;
+  animation: toast-enter 0.5s cubic-bezier(0.21, 1.02, 0.43, 1.01) forwards;
+  will-change: transform, opacity;
+}
+
+.toast-skew-exit {
+  transform-origin: center right;
+  animation: var(--animate-toast-exit);
+  will-change: transform, opacity;
+  pointer-events: none;
 }
