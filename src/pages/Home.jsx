@@ -18,7 +18,7 @@ export function Hero() {
   const HERO_PRODUCTS = pd.getHeroProducts();
 
   return (
-    <section className="mt-20 lg:min-h-[calc(100vh-80px)] flex items-center py-4 lg:py-6 overflow-hidden">
+    <section className="lg:min-h-[calc(100vh-80px)] flex items-center py-4 lg:py-6 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col justify-between gap-6 lg:gap-10">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-8">
           <div className="w-full md:max-w-3xl space-y-4">
@@ -131,13 +131,13 @@ export function BestSellers() {
           <div className="flex items-center gap-2" dir="ltr">
             <button
               onClick={() => swiperInstance?.slidePrev()}
-              className="w-10 h-10 md:w-11 md:h-11 rounded-xl sm:rounded-2xl border border-neutral-100 bg-neutral-50 flex items-center justify-center text-neutral-800 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 active:scale-95 transition-all duration-300 shadow-sm"
+              className="w-10 h-10 md:w-11 md:h-11 rounded-xl sm:rounded-2xl bg-neutral-100 flex items-center justify-center text-neutral-800 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 active:scale-95 transition-all duration-300"
             >
               <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
             </button>
             <button
               onClick={() => swiperInstance?.slideNext()}
-              className="w-10 h-10 md:w-11 md:h-11 rounded-xl sm:rounded-2xl border border-neutral-100 bg-neutral-50 flex items-center justify-center text-neutral-800 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 active:scale-95 transition-all duration-300 shadow-sm"
+              className="w-10 h-10 md:w-11 md:h-11 rounded-xl sm:rounded-2xl bg-neutral-100 flex items-center justify-center text-neutral-800 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 active:scale-95 transition-all duration-300"
             >
               <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2} />
             </button>
@@ -358,7 +358,7 @@ export function MarketingBanner() {
               <span className="font-black text-[#ffffff]">ببصمتـك الخاصـة</span>
             </h2>
 
-            <p className="text-sm md:text-base text-[#6b7280] max-w-xl font-light leading-relaxed">
+            <p className="text-sm md:text-base text-brand-muted max-w-xl font-light leading-relaxed">
               نحول أفكارك وشعارك إلى تفاصيل استثنائية محفورة على صناديق التغليف
               والأكياس الفاخرة، لتترك انطباعًا مذهلاً يليق بمناسبتك أو هويتك
               التجارية.

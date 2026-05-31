@@ -75,15 +75,51 @@ export default function Header() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
-          <Link to="/" className="shrink-0">
-            <img
-              src="/logo.png"
-              alt="BOX LINE"
-              className="h-10 w-auto object-contain"
-            />
-          </Link>
+          
+          {/* Icons Section - Moved to Right & Internal Order Reversed */}
+          <div className="flex items-center gap-2 shrink-0 order-1">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen(!isOpen);
+              }}
+              className="lg:hidden p-2 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100 rounded-xl transition-colors"
+              aria-label="فتح القائمة"
+            >
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
 
-          <nav className="hidden lg:flex items-center gap-7">
+            <Link
+              to="/cart"
+              className="relative p-2.5 bg-neutral-900 text-white rounded-xl hover:bg-neutral-800 active:scale-90 transition-all duration-200 flex items-center justify-center"
+            >
+              <ShoppingBasket className="w-5 h-5" />
+              {getCartPositionsCount() > 0 && (
+                <span className="absolute -top-1.5 -left-1.5 w-5 h-5 bg-black text-white rounded-full flex items-center justify-center text-[10px] font-black border-2 border-white">
+                  {getCartPositionsCount()}
+                </span>
+              )}
+            </Link>
+
+            <Link
+              to="/login"
+              className="p-2 text-neutral-500 hover:text-neutral-900 transition-colors rounded-xl hover:bg-neutral-100"
+              title="تسجيل الدخول"
+            >
+              <User className="w-5 h-5" />
+            </Link>
+
+            <Link
+              to="/orders"
+              className="hidden sm:flex p-2 text-neutral-500 hover:text-neutral-900 transition-colors rounded-xl hover:bg-neutral-100"
+              title="تتبع الطلبات"
+            >
+              <ClipboardList className="w-5 h-5" />
+            </Link>
+          </div>
+
+          {/* Navigation Links - Center Section */}
+          <nav className="hidden lg:flex items-center gap-7 order-2">
             {MENU_DATA.mainLinks.slice(0, 2).map((link) => (
               <NavLink key={link.path} to={link.path} className={getDesktopClass}>
                 {link.label}
@@ -117,46 +153,15 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2 shrink-0">
-            <Link
-              to="/orders"
-              className="hidden sm:flex p-2 text-neutral-500 hover:text-neutral-900 transition-colors rounded-xl hover:bg-neutral-100"
-              title="تتبع الطلبات"
-            >
-              <ClipboardList className="w-5 h-5" />
-            </Link>
+          {/* Logo Section - Moved to Left */}
+          <Link to="/" className="shrink-0 order-3">
+            <img
+              src="/logo.png"
+              alt="BOX LINE"
+              className="h-10 w-auto object-contain"
+            />
+          </Link>
 
-            <Link
-              to="/login"
-              className="p-2 text-neutral-500 hover:text-neutral-900 transition-colors rounded-xl hover:bg-neutral-100"
-              title="تسجيل الدخول"
-            >
-              <User className="w-5 h-5" />
-            </Link>
-
-            <Link
-              to="/cart"
-              className="relative p-2.5 bg-neutral-900 text-white rounded-xl hover:bg-neutral-800 active:scale-90 transition-all duration-200 flex items-center justify-center"
-            >
-              <ShoppingBasket className="w-5 h-5" />
-              {getCartPositionsCount() > 0 && (
-                <span className="absolute -top-1.5 -left-1.5 w-5 h-5 bg-black text-white rounded-full flex items-center justify-center text-[10px] font-black border-2 border-white">
-                  {getCartPositionsCount()}
-                </span>
-              )}
-            </Link>
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsOpen(!isOpen);
-              }}
-              className="lg:hidden p-2 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100 rounded-xl transition-colors"
-              aria-label="فتح القائمة"
-            >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
-          </div>
         </div>
       </div>
 
