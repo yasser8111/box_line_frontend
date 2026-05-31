@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+
 import { useCart } from "../context/CartContext";
+import { useToast } from "../context/ToastContext";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import Button from "../components/ui/Button";
+import { getProductById } from "../data/products";
 
 // Complete database of printing products
 const PRODUCTS_DB = {
@@ -270,11 +274,12 @@ const PRODUCTS_DB = {
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { addToCart } = useCart();
-  
-  // Find product from DB or fallback
+  const toast = useToast();
+
+  const catalogProduct = getProductById(id);
   const product = PRODUCTS_DB[id] || PRODUCTS_DB["mailer-box"];
+  const productImage = catalogProduct?.image;
 
   // Configurator Options States
   const [size, setSize] = useState(product.sizes ? product.sizes[0] : "حجم قياسي");
@@ -297,9 +302,6 @@ export default function ProductDetails() {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   
-  // Toast Alert State
-  const [showToast, setShowToast] = useState(false);
-
   // Sync initial options if product changes
   useEffect(() => {
     setSize(product.sizes ? product.sizes[0] : "حجم قياسي");
@@ -351,7 +353,10 @@ export default function ProductDetails() {
           setIsUploading(false);
           setUploadedFile({
             name: file.name,
-            size: (file.size / (1024 * 1024)).toFixed(2) + " MB"
+            size: (file.size / (1024 * 1024)).toFixed(2) + " MB",
+          });
+          toast.success("تم رفع الملف بنجاح", {
+            message: "يمكنك الآن إضافة الطلب إلى السلة.",
           });
           return 100;
         }
@@ -440,6 +445,8 @@ export default function ProductDetails() {
   };
 
   const priceReport = calculateCurrentPrice();
+  const canAddToCart = product.isReady || designService !== "uploaded" || uploadedFile;
+  const finishLabel = product.finishes?.find((f) => f.id === finish)?.name ?? "—";
 
   const handleAddToCart = () => {
     const optionsObj = product.isReady ? {
@@ -467,74 +474,65 @@ export default function ProductDetails() {
     };
 
     addToCart(product, optionsObj);
-    
-    setShowToast(true);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    
-    setTimeout(() => {
-      setShowToast(false);
-    }, 6000);
+
+    toast.success("تمت الإضافة إلى السلة", {
+      message: product.isReady
+        ? "يمكنك متابعة التسوق أو إتمام الطلب."
+        : "يمكنك تعديل خياراتك في السلة أو إتمام الطلب.",
+      action: { label: "عرض السلة", to: "/cart" },
+      duration: 6000,
+    });
   };
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col font-sans" dir="rtl">
+    <div className="min-h-screen bg-white flex flex-col" dir="rtl">
       <Header />
 
       {/* Breadcrumb Nav */}
-      <div className="bg-white border-b border-neutral-100 py-3 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-neutral-500">
-          <Link to="/" className="hover:text-neutral-900 transition-colors">الرئيسية</Link>
-          <span>/</span>
-          <span className="text-neutral-400">تخصيص مطبوعاتك</span>
-          <span>/</span>
-          <span className="text-neutral-900 font-bold">{product.name}</span>
+      <div className="mt-20 bg-white border-b border-neutral-100 py-3 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-500 overflow-x-auto whitespace-nowrap scrollbar-none">
+          <Link to="/" className="hover:text-neutral-900 transition-colors shrink-0">الرئيسية</Link>
+          <span className="shrink-0">/</span>
+          <Link to="/products" className="hover:text-neutral-900 transition-colors shrink-0">المنتجات</Link>
+          <span className="shrink-0">/</span>
+          <span className="text-neutral-900 font-bold truncate max-w-[140px] sm:max-w-none">{product.name}</span>
         </div>
       </div>
 
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full relative">
-        
-        {/* Success Toast Notification */}
-        {showToast && (
-          <div className="mb-6 p-4 bg-neutral-900 border border-neutral-800 text-white rounded-2xl flex items-center justify-between gap-4 animate-scale-in shadow-md">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white text-neutral-900 flex items-center justify-center font-black text-lg">✓</div>
-              <div>
-                <h4 className="font-bold text-sm text-white">تم إضافة طلب التخصيص بنجاح في السلة!</h4>
-                <p className="text-xs text-neutral-400">يمكنك تعديل خياراتك في السلة أو الانتقال لطلب الطباعة فوراً.</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <Link to="/cart" className="px-4 py-2 bg-white hover:bg-neutral-100 text-neutral-900 font-bold rounded-full text-xs transition-colors">عرض السلة</Link>
-              <button onClick={() => setShowToast(false)} className="text-neutral-400 hover:text-white text-xs px-2 transition-colors">إغلاق</button>
-            </div>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:items-start">
+      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 w-full relative pb-28 lg:pb-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 lg:items-start">
           
           {/* LEFT COLUMN: Visual Preview (Desktop Sticky, spans 5 cols) */}
-          <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-28">
-            <div className="bg-white rounded-3xl border border-neutral-100 p-6 shadow-sm flex flex-col items-center justify-center">
-              <div className="w-full aspect-square bg-neutral-950 rounded-2xl overflow-hidden relative flex items-center justify-center">
-                {product.imageSvg}
-                
-                {/* Specs Overlay Tag */}
-                <div className="absolute bottom-4 right-4 bg-neutral-900/90 border border-neutral-800 rounded-xl p-3 text-[10px] text-neutral-300 space-y-1">
-                  <span className="block font-bold text-white text-xs border-b border-neutral-800 pb-1 mb-1">المواصفات الحالية</span>
-                  <span className="block">المقاس: {size === "custom" ? `${customW}x${customH}x${customD} سم` : size}</span>
-                  <span className="block">السماكة: {thickness}</span>
-                  <span className="block">التشطيب: {product.finishes.find(f => f.id === finish)?.name}</span>
-                </div>
+          <div className="lg:col-span-5 space-y-4 lg:space-y-6 lg:sticky lg:top-28">
+            <div className="bg-white rounded-2xl sm:rounded-3xl border border-neutral-100 p-4 sm:p-6 shadow-sm flex flex-col items-center justify-center">
+              <div className="w-full aspect-square max-h-[320px] sm:max-h-none bg-neutral-950 rounded-2xl overflow-hidden relative flex items-center justify-center">
+                {productImage ? (
+                  <img
+                    src={productImage}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  product.imageSvg
+                )}
+
+                {!product.isReady && (
+                  <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4 bg-neutral-900/90 border border-neutral-800 rounded-xl p-2 sm:p-3 text-[9px] sm:text-[10px] text-neutral-300 space-y-0.5 sm:space-y-1 max-w-[calc(100%-1rem)]">
+                    <span className="block font-bold text-white text-[10px] sm:text-xs border-b border-neutral-800 pb-1 mb-1">المواصفات الحالية</span>
+                    <span className="block truncate">المقاس: {size === "custom" ? `${customW}x${customH}x${customD} سم` : size}</span>
+                    {thickness && <span className="block">السماكة: {thickness}</span>}
+                    <span className="block truncate">التشطيب: {finishLabel}</span>
+                  </div>
+                )}
               </div>
-              
-              <div className="w-full mt-6 text-center space-y-2">
-                <h2 className="text-xl font-bold text-neutral-900">{product.name}</h2>
-                <p className="text-xs text-neutral-500 leading-relaxed font-light">{product.desc}</p>
+
+              <div className="w-full mt-4 sm:mt-6 text-center space-y-2">
+                <h2 className="text-lg sm:text-xl font-bold text-neutral-900">{product.name}</h2>
+                <p className="text-xs text-neutral-500 leading-relaxed font-light line-clamp-3 sm:line-clamp-none">{product.desc}</p>
               </div>
             </div>
 
-            {/* Quick Helper info cards */}
-            <div className="bg-white rounded-2xl border border-neutral-100 p-5 space-y-4">
+            <div className="hidden sm:block bg-white rounded-2xl border border-neutral-100 p-4 sm:p-5 space-y-4">
               <h3 className="text-sm font-bold text-neutral-900 border-b border-neutral-50 pb-2">تفاصيل هامة حول الملفات:</h3>
               <ul className="text-xs text-neutral-500 space-y-2.5">
                 <li className="flex items-start gap-2">
@@ -554,17 +552,17 @@ export default function ProductDetails() {
           </div>
 
           {/* RIGHT COLUMN: Product Purchase or Configurator (spans 7 cols) */}
-          <div className="lg:col-span-7 bg-white rounded-3xl border border-neutral-100 p-6 md:p-8 shadow-sm space-y-8">
+          <div className="lg:col-span-7 bg-white rounded-2xl sm:rounded-3xl border border-neutral-100 p-4 sm:p-6 md:p-8 shadow-sm space-y-6 sm:space-y-8">
 
             {product.isReady ? (
               /* ===== READY PRODUCT: SIMPLE PURCHASE UI ===== */
               <>
                 <div>
-                  <h2 className="text-2xl font-black text-neutral-900">{product.name}</h2>
+                  <h2 className="text-xl sm:text-2xl font-black text-neutral-900">{product.name}</h2>
                   <p className="text-sm text-neutral-500 mt-2 leading-relaxed">{product.desc}</p>
                 </div>
-                <div className="flex items-center gap-4 py-4 border-y border-neutral-100">
-                  <span className="text-3xl font-black text-neutral-900">{product.price} ريال</span>
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4 py-4 border-y border-neutral-100">
+                  <span className="text-2xl sm:text-3xl font-black text-green-600">{product.price} ريال</span>
                   <span className="text-xs text-neutral-400 bg-neutral-50 px-3 py-1.5 rounded-full">شامل الضريبة</span>
                 </div>
                 <div className="space-y-3">
@@ -580,10 +578,9 @@ export default function ProductDetails() {
                   <div className="flex justify-between text-sm"><span className="text-neutral-400">ضريبة القيمة المضافة (15%)</span><span className="font-bold">{priceReport.tax} ريال</span></div>
                   <div className="flex justify-between items-end border-t border-neutral-800 pt-3"><span className="text-xs text-neutral-500">الإجمالي</span><span className="text-2xl font-black text-white">{priceReport.total} ريال</span></div>
                 </div>
-                <button type="button" onClick={handleAddToCart} className="w-full py-4 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded-full shadow-md transition-all text-sm flex items-center justify-center gap-2.5">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-                  <span>أضف إلى السلة</span>
-                </button>
+                <Button type="button" onClick={handleAddToCart} fullWidth size="lg" className="hidden lg:flex">
+                  أضف إلى السلة
+                </Button>
                 <div className="grid grid-cols-2 gap-3 pt-2">
                   {[{ icon: "🚚", text: "توصيل سريع" }, { icon: "✅", text: "جاهز للشحن" }, { icon: "🔄", text: "إرجاع سهل" }, { icon: "💳", text: "دفع آمن" }].map((f, i) => (
                     <div key={i} className="flex items-center gap-2 p-3 bg-neutral-50 rounded-xl">
@@ -597,7 +594,7 @@ export default function ProductDetails() {
               /* ===== CUSTOM PRODUCT: FULL CONFIGURATOR ===== */
               <>
             <div>
-              <h2 className="text-2xl font-black text-neutral-900">تخصيص مواصفات الطباعة</h2>
+              <h2 className="text-xl sm:text-2xl font-black text-neutral-900">تخصيص مواصفات الطباعة</h2>
               <p className="text-xs text-neutral-400 mt-1">حدد تفاصيل طباعة وهندسة كرتونتك/مطبوعاتك بدقة للحصول على التكلفة الفورية.</p>
             </div>
 
@@ -667,13 +664,13 @@ export default function ProductDetails() {
                       key={p.id}
                       type="button"
                       onClick={() => setPaperType(p.id)}
-                      className={`px-4 py-3 text-xs font-semibold rounded-2xl border text-right transition-all flex items-center justify-between ${
+                      className={`px-4 py-3 text-xs font-semibold rounded-2xl border text-right transition-all flex items-center justify-between gap-2 min-w-0 ${
                         paperType === p.id
                           ? "bg-neutral-100 border-neutral-900 text-neutral-900 font-bold"
                           : "border-neutral-200 hover:border-neutral-900 text-neutral-600"
                       }`}
                     >
-                      <span>{p.name}</span>
+                      <span className="min-w-0 flex-1 leading-relaxed">{p.name}</span>
                       {paperType === p.id && <span className="w-1.5 h-1.5 bg-neutral-900 rounded-full"></span>}
                     </button>
                   ))}
@@ -720,13 +717,13 @@ export default function ProductDetails() {
                       key={f.id}
                       type="button"
                       onClick={() => setFinish(f.id)}
-                      className={`px-4 py-3 text-xs font-semibold rounded-2xl border text-right transition-all flex items-center justify-between ${
+                      className={`px-4 py-3 text-xs font-semibold rounded-2xl border text-right transition-all flex items-center justify-between gap-2 min-w-0 ${
                         finish === f.id
                           ? "bg-neutral-100 border-neutral-900 text-neutral-900 font-bold"
                           : "border-neutral-200 hover:border-neutral-900 text-neutral-600"
                       }`}
                     >
-                      <span>{f.name}</span>
+                      <span className="min-w-0 flex-1 leading-relaxed">{f.name}</span>
                       {finish === f.id && <span className="w-1.5 h-1.5 bg-neutral-900 rounded-full"></span>}
                     </button>
                   ))}
@@ -735,7 +732,7 @@ export default function ProductDetails() {
 
               {/* Option 5: Quantity Selection */}
               <div className="space-y-3 pt-2">
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
                   <label className="block text-sm font-bold text-neutral-900">6. الكمية المطلوبة:</label>
                   <span className="text-xs font-bold text-neutral-500">أقل كمية: {product.minQty} قطعة</span>
                 </div>
@@ -760,7 +757,7 @@ export default function ProductDetails() {
               {/* Option 6: Design Service */}
               <div className="space-y-3">
                 <label className="block text-sm font-bold text-neutral-900">7. خدمة التصميم:</label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setDesignService("uploaded")}
@@ -855,9 +852,9 @@ export default function ProductDetails() {
             </div>
 
             {/* LIVE PRICE REPORT CARD & ACTIONS */}
-            <div className="p-6 bg-neutral-900 rounded-3xl text-white space-y-6">
-              <div className="flex justify-between items-center border-b border-neutral-800 pb-4">
-                <h3 className="font-bold text-white text-base">حاسبة تسعير الطلب الفورية</h3>
+            <div className="p-4 sm:p-6 bg-neutral-900 rounded-2xl sm:rounded-3xl text-white space-y-4 sm:space-y-6">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 border-b border-neutral-800 pb-4">
+                <h3 className="font-bold text-white text-sm sm:text-base">حاسبة تسعير الطلب الفورية</h3>
                 {priceReport.discountPct > 0 && (
                   <span className="bg-neutral-900 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
                     تم تطبيق {priceReport.discountPct}% خصم جملة! 🎉
@@ -905,44 +902,37 @@ export default function ProductDetails() {
                   <span className="text-white font-semibold">{priceReport.tax} ريال</span>
                 </div>
                 
-                <div className="flex justify-between items-end border-t border-neutral-800 pt-4">
+                <div className="flex justify-between items-end border-t border-neutral-800 pt-4 gap-4">
                   <div>
                     <span className="block text-[10px] text-neutral-500">السعر الإجمالي النهائي</span>
-                    <span className="text-3xl font-black text-white">{priceReport.total} ريال</span>
+                    <span className="text-2xl sm:text-3xl font-black text-white">{priceReport.total} ريال</span>
                   </div>
-                  <span className="text-[10px] text-neutral-500 font-light">يشمل الضريبة والخيارات المختارة</span>
+                  <span className="text-[10px] text-neutral-500 font-light text-left shrink-0">يشمل الضريبة والخيارات المختارة</span>
                 </div>
               </div>
 
               {/* Order buttons */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <button
+              <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <Button
                   type="button"
                   onClick={handleAddToCart}
-                  disabled={designService === "uploaded" && !uploadedFile}
-                  className={`w-full py-4 font-bold rounded-full text-center text-sm transition-all duration-200 flex items-center justify-center gap-2.5 ${
-                    designService === "uploaded" && !uploadedFile
-                      ? "bg-neutral-800 text-neutral-555 cursor-not-allowed border border-neutral-850"
-                      : "bg-neutral-900 hover:bg-neutral-800 text-white shadow-md hover:shadow-lg"
-                  }`}
+                  disabled={!canAddToCart}
+                  fullWidth
+                  size="lg"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                  </svg>
-                  <span>أضف طلب التخصيص للسلة</span>
-                </button>
+                  أضف طلب التخصيص للسلة
+                </Button>
 
-                <a
+                <Button
                   href={`https://wa.me/966920001234?text=مرحباً، أرغب بالاستفسار عن طباعة وتفصيل ${product.name} كمية ${quantity} قطعة.`}
                   target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-4 bg-neutral-850 hover:bg-neutral-800 border border-neutral-800 font-bold rounded-full text-center text-sm text-neutral-200 transition-all flex items-center justify-center gap-2"
+                  variant="outline"
+                  fullWidth
+                  size="lg"
+                  className="bg-neutral-800 border-neutral-700 text-neutral-200 hover:bg-neutral-700"
                 >
-                  <svg className="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
-                  <span>استفسار فني واتساب</span>
-                </a>
+                  استفسار فني واتساب
+                </Button>
               </div>
 
               {designService === "uploaded" && !uploadedFile && (
@@ -954,6 +944,25 @@ export default function ProductDetails() {
 
           </div>
 
+        </div>
+
+        {/* شريط ثابت للجوال — إضافة للسلة */}
+        <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-neutral-100 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.08)]">
+          <div className="max-w-7xl mx-auto flex items-center gap-3">
+            <div className="shrink-0 min-w-0">
+              <span className="text-[10px] text-neutral-400 block">الإجمالي</span>
+              <span className="text-lg font-black text-neutral-900">{priceReport.total} ريال</span>
+            </div>
+            <Button
+              type="button"
+              onClick={handleAddToCart}
+              disabled={!canAddToCart}
+              size="md"
+              className="flex-1 min-w-0"
+            >
+              {product.isReady ? "أضف للسلة" : "أضف طلب التخصيص"}
+            </Button>
+          </div>
         </div>
       </main>
 

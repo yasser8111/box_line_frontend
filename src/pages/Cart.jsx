@@ -1,12 +1,26 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import { useCart } from "../context/CartContext";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import Button from "../components/ui/Button";
+import { useToast } from "../context/ToastContext";
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, clearCart, getCartTotal } = useCart();
   const navigate = useNavigate();
+  const toast = useToast();
+
+  const handleRemoveItem = (cartItemId, productName) => {
+    removeFromCart(cartItemId);
+    toast.info("تم حذف المنتج", { message: productName });
+  };
+
+  const handleClearCart = () => {
+    clearCart();
+    toast.warning("تم تفريغ السلة", { message: "أضف منتجات جديدة للمتابعة." });
+  };
 
   const subtotal = getCartTotal();
   const tax = parseFloat((subtotal * 0.15).toFixed(2));
@@ -14,19 +28,19 @@ export default function Cart() {
   const grandTotal = parseFloat((subtotal + tax + shipping).toFixed(2));
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col font-sans" dir="rtl">
+    <div className="min-h-screen bg-white flex flex-col" dir="rtl">
       <Header />
 
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-neutral-100 py-3 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-neutral-500">
+      <div className="mt-20 bg-white border-b border-neutral-100 py-3 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-500 overflow-x-auto whitespace-nowrap">
           <Link to="/" className="hover:text-neutral-900 transition-colors">الرئيسية</Link>
           <span>/</span>
           <span className="text-neutral-900 font-bold">سلة المشتريات ({cart.length} منتج)</span>
         </div>
       </div>
 
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 w-full pb-28 lg:pb-10">
         {cart.length === 0 ? (
           /* Empty Cart State */
           <div className="flex flex-col items-center justify-center py-24 space-y-6 text-center animate-fade-in-up">
@@ -39,29 +53,28 @@ export default function Cart() {
             <p className="text-sm text-neutral-500 max-w-sm">
               لم تقم بإضافة أي منتجات طباعة مخصصة بعد. تصفح خدماتنا واختر ما يناسب مشروعك.
             </p>
-            <Link
-              to="/"
-              className="px-8 py-3 bg-neutral-900 text-white font-bold rounded-full hover:bg-neutral-800 transition-all shadow-md"
-            >
-              تصفح خدمات الطباعة
-            </Link>
+            <Button to="/products" size="lg">
+              تصفح المنتجات
+            </Button>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
             {/* Cart Items List (8 cols) */}
-            <div className="lg:col-span-8 space-y-5">
-              <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-black text-neutral-900">سلة طلبات الطباعة</h1>
-                <button
-                  onClick={clearCart}
-                  className="text-xs text-red-500 hover:text-red-700 font-bold flex items-center gap-1 transition-colors"
+            <div className="lg:col-span-8 space-y-4 sm:space-y-5">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+                <h1 className="text-xl sm:text-2xl font-black text-neutral-900">سلة طلبات الطباعة</h1>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleClearCart}
+                  className="text-red-500 hover:text-red-700 hover:bg-red-50 !px-2 !py-1"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                   <span>تفريغ السلة</span>
-                </button>
+                </Button>
               </div>
 
               {cart.map((item, idx) => (
@@ -95,7 +108,7 @@ export default function Cart() {
                           </span>
                         </div>
                         <button
-                          onClick={() => removeFromCart(item.cartItemId)}
+                          onClick={() => handleRemoveItem(item.cartItemId, item.product.name)}
                           className="p-1.5 rounded-full text-neutral-400 hover:text-red-500 hover:bg-red-50 transition-all"
                           title="حذف المنتج"
                         >
@@ -152,8 +165,8 @@ export default function Cart() {
                       </div>
 
                       {/* Price & Quantity Row */}
-                      <div className="flex items-center justify-between pt-2 border-t border-neutral-50">
-                        <div className="flex items-center gap-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-2 border-t border-neutral-50">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-xs text-neutral-400">الكمية:</span>
                           <div className="flex items-center bg-neutral-100 rounded-full overflow-hidden border border-neutral-200">
                             <button
@@ -176,7 +189,7 @@ export default function Cart() {
                           <span className="text-[10px] text-neutral-400">قطعة</span>
                         </div>
 
-                        <div className="text-left">
+                        <div className="text-right sm:text-left">
                           <span className="block text-[10px] text-neutral-400">سعر القطعة: {item.options.unitPrice} ريال</span>
                            <span className="text-lg font-black text-neutral-900">{item.price.toFixed(2)} ريال</span>
                         </div>
@@ -222,22 +235,13 @@ export default function Cart() {
                   </div>
                 </div>
 
-                 <button
-                  onClick={() => navigate("/checkout")}
-                  className="w-full py-4 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded-full shadow-md transition-all text-sm flex items-center justify-center gap-2"
-                >
-                  <span>إتمام الطلب والدفع</span>
-                  <svg className="w-4 h-4 transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </button>
- 
-                <Link
-                  to="/"
-                  className="w-full py-3 border border-neutral-200 bg-white hover:bg-neutral-50 text-neutral-700 font-semibold rounded-full text-sm text-center block transition-all"
-                >
+                <Button fullWidth size="lg" onClick={() => navigate("/checkout")} className="hidden lg:flex">
+                  إتمام الطلب والدفع
+                </Button>
+
+                <Button to="/products" variant="outline" fullWidth size="md" className="hidden lg:flex">
                   العودة للتسوق
-                </Link>
+                </Button>
               </div>
 
               <div className="bg-white rounded-2xl border border-neutral-100 p-5 space-y-3.5">
@@ -266,6 +270,20 @@ export default function Cart() {
 
           </div>
         </div>
+        )}
+
+        {cart.length > 0 && (
+          <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-neutral-100 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.08)]">
+            <div className="max-w-7xl mx-auto flex items-center gap-3">
+              <div className="shrink-0">
+                <span className="text-[10px] text-neutral-400 block">الإجمالي</span>
+                <span className="text-lg font-black text-neutral-900">{grandTotal.toFixed(2)} ريال</span>
+              </div>
+              <Button size="md" className="flex-1" onClick={() => navigate("/checkout")}>
+                إتمام الطلب
+              </Button>
+            </div>
+          </div>
         )}
       </main>
 

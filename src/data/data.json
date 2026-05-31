@@ -6,35 +6,35 @@
       { "id": 3, "image": "/imges/product_3.png", "alt": "تغليف فاخر" }
     ],
     "best_sellers": [
-      { "id": 1, "image": "/imges/product_1.png", "title": "صندوق السعادة الفاخر", "desc": "تنسيق متكامل يجمع بين الفخامة والأناقة ليناسب جميع مناسباتكم السعيدة." },
-      { "id": 2, "image": "/imges/product_2.png", "title": "مجموعة الاسترخاء العطرية", "desc": "تحتوي على روائح مهدئة ومختارة بعناية لتجربة استرخاء فريدة ومثالية." },
-      { "id": 3, "image": "/imges/product_3.png", "title": "تغليف كلاسيكي راقي", "desc": "لمسات يدوية دقيقة بخامات فخمة تضفي على هديتك رونقاً جذاباً وساحراً." },
-      { "id": 4, "image": "/imges/product_4.png", "title": "باقة ورد جوري طبيعي", "desc": "تنسيق كلاسيكي مذهل من أجود أنواع الورد الطبيعي لتعبر عن أصدق المشاعر." },
-      { "id": 5, "image": "/imges/product_5.png", "title": "صندوق الذكريات الخشبي", "desc": "محفور يدوياً بدقة عالية ليحفظ أدق تفاصيل ولحظات العمر الجميلة." },
-      { "id": 6, "image": "/imges/product_6.png", "title": "تنسيق ملكي خاص", "desc": "مجموعة حصرية مصممة خصيصاً للشخصيات المميزة لتترك انطباعاً لا ينسى." }
+      { "id": 1, "image": "/imges/product_1.png", "title": "صندوق السعادة الفاخر", "desc": "تنسيق متكامل يجمع بين الفخامة والأناقة ليناسب جميع مناسباتكم السعيدة.", "price": 150 },
+      { "id": 2, "image": "/imges/product_2.png", "title": "مجموعة الاسترخاء العطرية", "desc": "تحتوي على روائح مهدئة ومختارة بعناية لتجربة استرخاء فريدة ومثالية.", "price": 120 },
+      { "id": 3, "image": "/imges/product_3.png", "title": "تغليف كلاسيكي راقي", "desc": "لمسات يدوية دقيقة بخامات فخمة تضفي على هديتك رونقاً جذاباً وساحراً.", "price": 45 },
+      { "id": 4, "image": "/imges/product_4.png", "title": "باقة ورد جوري طبيعي", "desc": "تنسيق كلاسيكي مذهل من أجود أنواع الورد الطبيعي لتعبر عن أصدق المشاعر.", "price": 85 },
+      { "id": 5, "image": "/imges/product_5.png", "title": "صندوق الذكريات الخشبي", "desc": "محفور يدوياً بدقة عالية ليحفظ أدق تفاصيل ولحظات العمر الجميلة.", "price": 200 },
+      { "id": 6, "image": "/imges/product_6.png", "title": "تنسيق ملكي خاص", "desc": "مجموعة حصرية مصممة خصيصاً للشخصيات المميزة لتترك انطباعاً لا ينسى.", "price": 350 }
     ],
     "ready": [
-      { "id": "ready-bag-1", "name": "أكياس هدايا فاخرة (وردي)", "price": 15, "badge": "الأكثر مبيعاً", "category": "ready", "image": "/imges/product_1.png" },
-      { "id": "ready-box-1", "name": "صندوق مجوهرات مخملي", "price": 35, "badge": "إصدار محدود", "category": "ready", "image": "/imges/product_2.png" },
-      { "id": "ready-wrapping-paper", "name": "رول تغليف هدايا مورد", "price": 25, "category": "ready", "image": "/imges/product_3.png" },
-      { "id": "ready-card-1", "name": "كروت تهنئة (مجموعة 5 قطع)", "price": 20, "category": "ready", "image": "/imges/product_4.png" },
-      { "id": "ready-bag-2", "name": "كيس هدايا كرافت كلاسيك", "price": 10, "category": "ready", "image": "/imges/product_5.png" },
-      { "id": "ready-box-2", "name": "صندوق هدايا بنافذة شفافة", "price": 22, "badge": "جديد", "category": "ready", "image": "/imges/product_6.png" },
-      { "id": "ready-bag-3", "name": "أكياس هدايا فاخرة (أزرق)", "price": 15, "category": "ready", "image": "/imges/product_1.png" },
-      { "id": "ready-box-3", "name": "صندوق هدايا خشبي صغير", "price": 40, "category": "ready", "image": "/imges/product_2.png" },
-      { "id": "ready-ribbon-1", "name": "شريط ستان أحمر عريض", "price": 12, "category": "ready", "image": "/imges/product_3.png" },
-      { "id": "ready-card-2", "name": "كرت تهنئة زواج فاخر", "price": 5, "category": "ready", "image": "/imges/product_4.png" }
+      { "id": "ready-bag-1", "title": "أكياس هدايا فاخرة (وردي)", "desc": "أكياس ورقية متينة ومثالية للهدايا الصغيرة والمتوسطة.", "price": 15, "badge": "الأكثر مبيعاً", "category": "ready", "image": "/imges/product_1.png" },
+      { "id": "ready-box-1", "title": "صندوق مجوهرات مخملي", "desc": "علبة مخملية ناعمة لحماية وتقديم المجوهرات بشكل أنيق.", "price": 35, "badge": "إصدار محدود", "category": "ready", "image": "/imges/product_2.png" },
+      { "id": "ready-wrapping-paper", "title": "رول تغليف هدايا مورد", "desc": "ورق تغليف سميك بجودة طباعة ممتازة ورسومات مبهجة.", "price": 25, "desc": "ورق تغليف سميك ومميز لحماية الهدايا.", "category": "ready", "image": "/imges/product_3.png" },
+      { "id": "ready-card-1", "title": "كروت تهنئة (مجموعة 5 قطع)", "desc": "تشكيلة من الكروت الملونة لكتابة أجمل العبارات.", "price": 20, "category": "ready", "image": "/imges/product_4.png" },
+      { "id": "ready-bag-2", "title": "كيس هدايا كرافت كلاسيك", "desc": "كيس كرافت صديق للبيئة بتصميم بسيط وراقي.", "price": 10, "category": "ready", "image": "/imges/product_5.png" },
+      { "id": "ready-box-2", "title": "صندوق هدايا بنافذة شفافة", "desc": "صندوق كرتوني يسمح برؤية محتويات الهدية بوضوح.", "price": 22, "badge": "جديد", "category": "ready", "image": "/imges/product_6.png" },
+      { "id": "ready-bag-3", "title": "أكياس هدايا فاخرة (أزرق)", "desc": "أكياس ورقية فاخرة بلون أزرق جذاب وجودة عالية.", "price": 15, "category": "ready", "image": "/imges/product_1.png" },
+      { "id": "ready-box-3", "title": "صندوق هدايا خشبي صغير", "desc": "صندوق مصنوع من الخشب الطبيعي لإضافة لمسة فخمة.", "price": 40, "category": "ready", "image": "/imges/product_2.png" },
+      { "id": "ready-ribbon-1", "title": "شريط ستان أحمر عريض", "desc": "شريط ستان ناعم ولامع لتزيين الصناديق والباقات.", "price": 12, "category": "ready", "image": "/imges/product_3.png" },
+      { "id": "ready-card-2", "title": "كرت تهنئة زواج فاخر", "desc": "كرت تهنئة بتفاصيل ذهبية مخصصة لمناسبات الزواج.", "price": 5, "category": "ready", "image": "/imges/product_4.png" }
     ],
     "custom": [
-      { "id": "mailer-box", "name": "كرتون بريدي مطبوع بشعارك", "price": 4.5, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_4.png" },
-      { "id": "gift-box", "name": "علب هدايا فاخرة مخصصة", "price": 8.5, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_5.png" },
-      { "id": "luxury-bags", "name": "أكياس تسوق ورقية مطبوعة", "price": 3.2, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_6.png" },
-      { "id": "round-stickers", "name": "ملصقات دائرية مخصصة", "price": 0.25, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_1.png" },
-      { "id": "party-sheets", "name": "أوراق ثيمات ومناسبات", "price": 1.2, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_2.png" },
-      { "id": "business-cards", "name": "كروت عمل شخصية فاخرة", "price": 0.8, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_3.png" },
-      { "id": "custom-tape", "name": "شريط لاصق بهويتك التجارية", "price": 6.0, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_4.png" },
-      { "id": "tissue-paper", "name": "ورق حشو مطبوع لحماية المنتجات", "price": 1.5, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_5.png" },
-      { "id": "thank-you-cards", "name": "كروت شكر مخصصة للعملاء", "price": 0.5, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_6.png" }
+      { "id": "mailer-box", "title": "كرتون بريدي مطبوع بشعارك", "desc": "صناديق شحن متينة مطبوعة بهويتك التجارية الخاصة.", "price": 4.5, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_4.png" },
+      { "id": "gift-box", "title": "علب هدايا فاخرة مخصصة", "desc": "علب هدايا صلبة ومخصصة حسب المقاسات والألوان المطلوبة.", "price": 8.5, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_5.png" },
+      { "id": "luxury-bags", "title": "أكياس تسوق ورقية مطبوعة", "desc": "أكياس ورقية فاخرة بحبال قطنية مطبوعة بشعار متجرك.", "price": 3.2, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_6.png" },
+      { "id": "round-stickers", "title": "ملصقات دائرية مخصصة", "desc": "ستيكرات دائرية لاصقة ومقاومة للقطع لتزيين التغليف.", "price": 0.25, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_1.png" },
+      { "id": "party-sheets", "title": "أوراق ثيمات ومناسبات", "desc": "أوراق مخصصة ومطبوعة بالثيمات الخاصة بالحفلات والمناسبات.", "price": 1.2, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_2.png" },
+      { "id": "business-cards", "title": "كروت عمل شخصية فاخرة", "desc": "بطاقات عمل شخصية بطباعة بارزة أو أطراف مذهبة.", "price": 0.8, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_3.png" },
+      { "id": "custom-tape", "title": "شريط لاصق بهويتك التجارية", "desc": "شريط لاصق عريض ومطبوع بشعار متجرك لحماية شحناتك.", "price": 6.0, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_4.png" },
+      { "id": "tissue-paper", "title": "ورق حشو مطبوع لحماية المنتجات", "desc": "ورق رقيق لحماية المنتجات داخل الصناديق وإضافة لمسة احترافية.", "price": 1.5, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_5.png" },
+      { "id": "thank-you-cards", "title": "كروت شكر مخصصة للعملاء", "desc": "كروت أنيقة لتقديم الشكر لعملائك ومشاركة حسابات التواصل.", "price": 0.5, "badge": "يبدأ من", "category": "custom", "image": "/imges/product_6.png" }
     ]
   },
   "categories": [

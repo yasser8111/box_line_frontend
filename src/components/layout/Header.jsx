@@ -10,11 +10,19 @@ import {
   X,
 } from "lucide-react";
 
-const SERVICE_LINKS = [
-  { path: "/category/ready", label: "منتجات جاهزة" },
-  { path: "/category/custom", label: "منتجات مخصصة" },
-  { path: "/service/wrapping", label: "تغليف الهدايا" },
-];
+const MENU_DATA = {
+  mainLinks: [
+    { path: "/", label: "الرئـسيـة" },
+    { path: "/products", label: "المنتجات" },
+    { path: "/about", label: "من نحن" },
+    { path: "/contact", label: "التواصل" },
+  ],
+  serviceLinks: [
+    { path: "/category/ready", label: "منتجات جاهزة" },
+    { path: "/category/custom", label: "منتجات مخصصة" },
+    { path: "/service/wrapping", label: "تغليف الهدايا" },
+  ],
+};
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +31,6 @@ export default function Header() {
   const { getCartPositionsCount } = useCart();
   const location = useLocation();
 
-  const desktopDropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
   useEffect(() => {
@@ -39,26 +46,24 @@ export default function Header() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        desktopDropdownRef.current &&
-        !desktopDropdownRef.current.contains(event.target)
-      ) {
-      }
-      if (
-        mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target)
-      ) {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const navLinkClass = ({ isActive }) =>
+  const getDesktopClass = ({ isActive }) =>
     `text-sm font-semibold transition-colors hover:text-neutral-900 ${
       isActive ? "text-neutral-900" : "text-neutral-500"
+    }`;
+
+  const getMobileClass = ({ isActive }) =>
+    `px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+      isActive
+        ? "bg-neutral-100 text-neutral-900"
+        : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
     }`;
 
   return (
@@ -79,18 +84,20 @@ export default function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-7">
-            <NavLink to="/products" className={navLinkClass}>
-              المنتجات
-            </NavLink>
+            {MENU_DATA.mainLinks.slice(0, 2).map((link) => (
+              <NavLink key={link.path} to={link.path} className={getDesktopClass}>
+                {link.label}
+              </NavLink>
+            ))}
 
-            <div className="relative group" ref={desktopDropdownRef}>
+            <div className="relative group">
               <button className="flex items-center gap-1 text-sm font-semibold text-neutral-500 hover:text-neutral-900 transition-colors">
                 الخدمات
                 <ChevronDown className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" />
               </button>
               <div className="absolute top-full right-0 pt-3 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 translate-y-1 group-hover:translate-y-0 z-50">
                 <div className="bg-white rounded-2xl shadow-xl border border-neutral-100 p-1.5 flex flex-col gap-0.5">
-                  {SERVICE_LINKS.map((s) => (
+                  {MENU_DATA.serviceLinks.map((s) => (
                     <Link
                       key={s.path}
                       to={s.path}
@@ -103,12 +110,11 @@ export default function Header() {
               </div>
             </div>
 
-            <NavLink to="/about" className={navLinkClass}>
-              من نحن
-            </NavLink>
-            <NavLink to="/contact" className={navLinkClass}>
-              التواصل
-            </NavLink>
+            {MENU_DATA.mainLinks.slice(2).map((link) => (
+              <NavLink key={link.path} to={link.path} className={getDesktopClass}>
+                {link.label}
+              </NavLink>
+            ))}
           </nav>
 
           <div className="flex items-center gap-2 shrink-0">
@@ -130,7 +136,7 @@ export default function Header() {
 
             <Link
               to="/cart"
-              className="relative p-2.5 bg-neutral-900 text-white rounded-xl hover:bg-neutral-800 transition-colors flex items-center justify-center"
+              className="relative p-2.5 bg-neutral-900 text-white rounded-xl hover:bg-neutral-800 active:scale-90 transition-all duration-200 flex items-center justify-center"
             >
               <ShoppingBasket className="w-5 h-5" />
               {getCartPositionsCount() > 0 && (
@@ -148,106 +154,72 @@ export default function Header() {
               className="lg:hidden p-2 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100 rounded-xl transition-colors"
               aria-label="فتح القائمة"
             >
-              {isOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
       </div>
 
       {isOpen && (
-        <div
-          ref={mobileMenuRef}
-          className="absolute top-full left-0 w-full lg:hidden border-t border-neutral-100 bg-white shadow-lg z-50 animate-fade-in-up"
-        >
-          <nav className="flex flex-col px-4 py-3 gap-1">
-            <NavLink
-              to="/products"
-              className={({ isActive }) =>
-                `px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
-                  isActive
-                    ? "bg-neutral-100 text-neutral-900"
-                    : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
-                }`
-              }
-            >
-              المنتجات
-            </NavLink>
+        <>
+          <div
+            className="fixed inset-0 top-[65px] bg-neutral-900/40 backdrop-blur-sm lg:hidden"
+            onClick={() => setIsOpen(false)}
+          />
+          <div
+            ref={mobileMenuRef}
+            className="absolute top-full left-0 w-full lg:hidden border-t border-neutral-100 bg-white shadow-xl z-50 animate-fade-in-down"
+          >
+            <nav className="flex flex-col px-4 py-3 gap-1">
+              {MENU_DATA.mainLinks.slice(0, 2).map((link) => (
+                <NavLink key={link.path} to={link.path} className={getMobileClass}>
+                  {link.label}
+                </NavLink>
+              ))}
 
-            <div>
-              <button
-                onClick={() => setServicesOpen(!servicesOpen)}
-                className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 transition-colors"
-              >
-                <span>الخدمات</span>
-                <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-              {servicesOpen && (
-                <div className="mr-4 mb-1 bg-neutral-50 rounded-xl border border-neutral-100 overflow-hidden">
-                  {SERVICE_LINKS.map((s) => (
-                    <NavLink
-                      key={s.path}
-                      to={s.path}
-                      className={({ isActive }) =>
-                        `block px-4 py-2.5 text-sm font-semibold transition-colors border-b border-neutral-100 last:border-0 ${
-                          isActive
-                            ? "text-neutral-900 bg-neutral-100"
-                            : "text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100/60"
-                        }`
-                      }
-                    >
-                      {s.label}
-                    </NavLink>
-                  ))}
-                </div>
-              )}
-            </div>
+              <div>
+                <button
+                  onClick={() => setServicesOpen(!servicesOpen)}
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 transition-colors"
+                >
+                  <span>الخدمات</span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {servicesOpen && (
+                  <div className="mr-4 mb-1 bg-neutral-50 rounded-xl border border-neutral-100 overflow-hidden">
+                    {MENU_DATA.serviceLinks.map((s) => (
+                      <NavLink
+                        key={s.path}
+                        to={s.path}
+                        className={({ isActive }) =>
+                          `block px-4 py-2.5 text-sm font-semibold transition-colors border-b border-neutral-100 last:border-0 ${
+                            isActive
+                              ? "text-neutral-900 bg-neutral-100"
+                              : "text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100/60"
+                          }`
+                        }
+                      >
+                        {s.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-            <NavLink
-              to="/about"
-              className={({ isActive }) =>
-                `px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
-                  isActive
-                    ? "bg-neutral-100 text-neutral-900"
-                    : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
-                }`
-              }
-            >
-              من نحن
-            </NavLink>
+              {MENU_DATA.mainLinks.slice(2).map((link) => (
+                <NavLink key={link.path} to={link.path} className={getMobileClass}>
+                  {link.label}
+                </NavLink>
+              ))}
 
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                `px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
-                  isActive
-                    ? "bg-neutral-100 text-neutral-900"
-                    : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
-                }`
-              }
-            >
-              التواصل
-            </NavLink>
-
-            <NavLink
-              to="/orders"
-              className={({ isActive }) =>
-                `px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
-                  isActive
-                    ? "bg-neutral-100 text-neutral-900"
-                    : "text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900"
-                }`
-              }
-            >
-              تتبع الطلبات
-            </NavLink>
-          </nav>
-        </div>
+              <NavLink to="/orders" className={getMobileClass}>
+                تتبع الطلبات
+              </NavLink>
+            </nav>
+          </div>
+        </>
       )}
     </header>
   );

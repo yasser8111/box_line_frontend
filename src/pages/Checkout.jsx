@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import { useCart } from "../context/CartContext";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import Button from "../components/ui/Button";
+import { useToast } from "../context/ToastContext";
 
 export default function Checkout() {
   const { cart, getCartTotal, clearCart } = useCart();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const subtotal = getCartTotal();
   const tax = parseFloat((subtotal * 0.15).toFixed(2));
@@ -36,7 +40,9 @@ export default function Checkout() {
 
     // Quick validation
     if (!name.trim() || !phone.trim() || !city.trim() || !address.trim()) {
-      alert("يرجى تعبئة جميع الحقول المطلوبة.");
+      toast.error("يرجى تعبئة جميع الحقول المطلوبة", {
+        message: "الاسم، الجوال، المدينة، والعنوان التفصيلي إلزامية.",
+      });
       return;
     }
 
@@ -44,14 +50,18 @@ export default function Checkout() {
     setOrderNumber(newOrderNumber);
     setShowSuccess(true);
     clearCart();
+    toast.success("تم إرسال طلبك بنجاح", {
+      message: `رقم الطلب: ${newOrderNumber}`,
+      duration: 8000,
+    });
   };
 
   // Redirect if cart is empty and not showing success
   if (cart.length === 0 && !showSuccess) {
     return (
-      <div className="min-h-screen bg-neutral-50 flex flex-col font-sans" dir="rtl">
+      <div className="min-h-screen bg-white flex flex-col" dir="rtl">
         <Header />
-        <main className="flex-grow flex flex-col items-center justify-center py-20 px-4 text-center space-y-6 animate-fade-in-up">
+        <main className="flex-grow flex flex-col items-center justify-center py-20 px-4 text-center space-y-6 animate-fade-in-up mt-20">
           <div className="w-24 h-24 bg-neutral-100 rounded-full flex items-center justify-center">
             <svg className="w-12 h-12 text-neutral-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -59,9 +69,9 @@ export default function Checkout() {
           </div>
           <h2 className="text-2xl font-black text-neutral-900">لا يمكن إتمام الطلب</h2>
           <p className="text-sm text-neutral-500">السلة فارغة. أضف منتجات طباعة مخصصة أولاً.</p>
-          <Link to="/" className="px-8 py-3 bg-neutral-900 text-white font-bold rounded-full hover:bg-neutral-800 shadow-md transition-all">
-            تصفح خدمات الطباعة
-          </Link>
+          <Button to="/products" size="lg">
+            تصفح المنتجات
+          </Button>
         </main>
         <Footer />
       </div>
@@ -69,12 +79,12 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 flex flex-col font-sans" dir="rtl">
+    <div className="min-h-screen bg-white flex flex-col" dir="rtl">
       <Header />
 
       {/* Breadcrumb */}
-      <div className="bg-white border-b border-neutral-100 py-3 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex items-center gap-2 text-xs text-neutral-500">
+      <div className="mt-20 bg-white border-b border-neutral-100 py-3 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-neutral-500 overflow-x-auto whitespace-nowrap">
           <Link to="/" className="hover:text-neutral-900 transition-colors">الرئيسية</Link>
           <span>/</span>
           <Link to="/cart" className="hover:text-neutral-900 transition-colors">السلة</Link>
@@ -83,12 +93,12 @@ export default function Checkout() {
         </div>
       </div>
 
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 w-full pb-28 lg:pb-10">
         
         {/* Success Modal Overlay */}
         {showSuccess && (
-          <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in-up">
-            <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl text-center space-y-6 animate-scale-in">
+          <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 animate-fade-in-up">
+            <div className="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full p-5 sm:p-8 shadow-2xl text-center space-y-5 sm:space-y-6 animate-scale-in max-h-[92vh] overflow-y-auto">
               {/* Success Icon */}
               <div className="w-20 h-20 mx-auto bg-neutral-900 rounded-full flex items-center justify-center shadow-md">
                 <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,32 +167,30 @@ export default function Checkout() {
               </div>
 
               <div className="flex gap-3 pt-2">
-                <button
-                  onClick={() => navigate("/")}
-                  className="flex-1 py-3 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded-full transition-all text-sm"
-                >
+                <Button onClick={() => navigate("/")} fullWidth size="md">
                   العودة للرئيسية
-                </button>
-                <a
+                </Button>
+                <Button
                   href={`https://wa.me/966920001234?text=مرحباً، أود متابعة طلبي رقم ${orderNumber}`}
                   target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 py-3 border border-neutral-200 text-neutral-700 font-bold rounded-full transition-all text-sm text-center hover:bg-neutral-50"
+                  variant="outline"
+                  fullWidth
+                  size="md"
                 >
                   تابع عبر واتساب
-                </a>
+                </Button>
               </div>
             </div>
           </div>
         )}
 
         {!showSuccess && (
-          <form onSubmit={handleSubmit}>
+          <form id="checkout-form" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
               {/* Form Fields (8 cols) */}
               <div className="lg:col-span-8 space-y-6">
-                <h1 className="text-2xl font-black text-neutral-900">إتمام طلب الطباعة والدفع</h1>
+                <h1 className="text-xl sm:text-2xl font-black text-neutral-900">إتمام طلب الطباعة والدفع</h1>
 
                 {/* Customer Information */}
                 <div className="bg-white rounded-3xl border border-neutral-100 shadow-sm p-6 space-y-5">
@@ -383,15 +391,9 @@ export default function Checkout() {
                     </div>
                   </div>
 
-                  <button
-                    type="submit"
-                    className="w-full py-4 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded-full shadow-md transition-all text-sm flex items-center justify-center gap-2"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>تأكيد الطلب والدفع</span>
-                  </button>
+                  <Button type="submit" fullWidth size="lg" className="hidden lg:flex">
+                    تأكيد الطلب والدفع
+                  </Button>
 
                   <p className="text-[10px] text-neutral-400 text-center">
                     بالضغط على "تأكيد الطلب" فإنك توافق على <Link to="/terms" className="text-neutral-900 underline">الشروط والأحكام</Link> وسياسة الاستخدام.
@@ -403,6 +405,20 @@ export default function Checkout() {
           </form>
         )}
       </main>
+
+      {!showSuccess && cart.length > 0 && (
+        <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-neutral-100 px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.08)]">
+          <div className="max-w-7xl mx-auto flex items-center gap-3">
+            <div className="shrink-0">
+              <span className="text-[10px] text-neutral-400 block">الإجمالي</span>
+              <span className="text-lg font-black text-neutral-900">{grandTotal.toFixed(2)} ريال</span>
+            </div>
+            <Button type="submit" form="checkout-form" size="md" className="flex-1">
+              تأكيد الطلب
+            </Button>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>

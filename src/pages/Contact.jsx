@@ -1,99 +1,162 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { MapPin, Mail, Phone, MessageSquare } from "lucide-react";
+
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import PageHero from "../components/ui/PageHero";
+import PageBanner from "../components/ui/PageBanner";
+import Button from "../components/ui/Button";
+import { useToast } from "../context/ToastContext";
+
+const CONTACT_INFO = [
+  {
+    title: "الموقع",
+    value: "الرياض، المملكة العربية السعودية",
+    icon: <MapPin className="w-5 h-5" strokeWidth={2} />,
+  },
+  {
+    title: "البريد الإلكتروني",
+    value: "info@boxline.com.sa",
+    icon: <Mail className="w-5 h-5" strokeWidth={2} />,
+    href: "mailto:info@boxline.com.sa",
+  },
+  {
+    title: "الهاتف",
+    value: "+966 92 000 1234",
+    icon: <Phone className="w-5 h-5" strokeWidth={2} />,
+    href: "tel:+966920001234",
+  },
+];
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
+  const toast = useToast();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("تم إرسال رسالتك بنجاح! سنتواصل معك قريباً.");
+    toast.success("تم إرسال رسالتك بنجاح", {
+      message: "سيتواصل معك فريقنا في أقرب وقت.",
+    });
     setFormData({ name: "", email: "", subject: "", message: "" });
   };
 
   return (
     <div className="min-h-screen bg-white flex flex-col" dir="rtl">
       <Header />
-      <PageHero title="تواصل معنا" subtitle="فريقنا متواجد دائماً للرد على استفساراتكم" />
+      <PageBanner 
+        title="تواصل معنا" 
+        subtitle="فريقنا متواجد دائماً للرد على استفساراتكم" 
+        image="/imges/bunners/contact-page-banner.jpeg"
+      />
 
-      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
-          <div className="card p-8">
-            <h2 className="text-xl font-black text-brand-dark mb-6">أرسل لنا رسالة</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {[
-                { key: "name", label: "الاسم الكريم", type: "text", placeholder: "أدخل اسمك" },
-                { key: "email", label: "البريد الإلكتروني", type: "email", placeholder: "example@domain.com" },
-                { key: "subject", label: "الموضوع", type: "text", placeholder: "موضوع الرسالة" },
-              ].map((field) => (
-                <div key={field.key}>
-                  <label className="block text-sm font-bold text-neutral-700 mb-1">{field.label}</label>
-                  <input
-                    type={field.type}
-                    required
-                    value={formData[field.key]}
-                    onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-green/30 focus:border-brand-green text-sm"
-                    placeholder={field.placeholder}
-                  />
+      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          
+          {/* قسم معلومات الاتصال والواتساب */}
+          <div className="lg:col-span-5 space-y-8 order-2 lg:order-1">
+            <div className="space-y-2">
+              <span className="text-xs font-bold text-green-600 uppercase tracking-wider bg-green-50 px-3 py-1.5 rounded-full">بيانات التواصل</span>
+              <h2 className="text-2xl font-black text-neutral-900 pt-1">معلومات الاتصال</h2>
+              <p className="text-neutral-500 text-sm font-light leading-relaxed">يسعدنا استقبال استفساراتكم وخدمتكم دائماً خلال أوقات العمل الرسمية.</p>
+            </div>
+
+            <div className="space-y-4">
+              {CONTACT_INFO.map((item) => (
+                <div key={item.title} className="flex items-start gap-4 p-4 rounded-2xl border border-neutral-100 bg-neutral-50/50 hover:bg-neutral-50 transition-colors duration-200">
+                  <div className="w-11 h-11 bg-green-50 text-green-600 rounded-xl flex items-center justify-center shrink-0 border border-green-100">
+                    {item.icon}
+                  </div>
+                  <div className="space-y-0.5">
+                    <h3 className="font-bold text-sm text-neutral-900">{item.title}</h3>
+                    {item.href ? (
+                      <a href={item.href} className="text-xs md:text-sm text-neutral-500 hover:text-green-600 transition-colors block">
+                        {item.value}
+                      </a>
+                    ) : (
+                      <p className="text-xs md:text-sm text-neutral-500">{item.value}</p>
+                    )}
+                  </div>
                 </div>
               ))}
-              <div>
-                <label className="block text-sm font-bold text-neutral-700 mb-1">الرسالة</label>
+            </div>
+
+            <div className="pt-2">
+              <Button
+                href="https://wa.me/966920001234"
+                target="_blank"
+                fullWidth
+                size="lg"
+                className="bg-green-600 hover:bg-green-700 text-white font-bold text-sm rounded-2xl flex items-center justify-center gap-2 transition-transform active:scale-95 duration-200 border-none"
+              >
+                <MessageSquare className="w-5 h-5 shrink-0" />
+                تواصل عبر واتساب
+              </Button>
+            </div>
+          </div>
+
+          {/* نموذج إرسال الرسالة المعزز */}
+          <div className="lg:col-span-7 bg-neutral-50 rounded-3xl p-6 md:p-10 border border-neutral-100 order-1 lg:order-2">
+            <div className="mb-6">
+              <h2 className="text-xl sm:text-2xl font-black text-neutral-900">أرسل لنا رسالة</h2>
+              <p className="text-xs md:text-sm text-neutral-400 mt-1">قم بتعبئة النموذج وسيرد عليك ممثلي خدمة العملاء فوراً.</p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { key: "name", label: "الاسم الكريم", type: "text", placeholder: "أدخل اسمك الكامل" },
+                  { key: "email", label: "البريد الإلكتروني", type: "email", placeholder: "example@domain.com" },
+                ].map((field) => (
+                  <div key={field.key} className="space-y-1.5">
+                    <label className="text-xs font-bold text-neutral-800 mr-1">{field.label}</label>
+                    <input
+                      type={field.type}
+                      required
+                      value={formData[field.key]}
+                      onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
+                      className="w-full bg-white border border-neutral-200 text-neutral-900 text-sm px-4 py-3 rounded-2xl focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 transition-all placeholder:text-neutral-300"
+                      placeholder={field.placeholder}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-neutral-800 mr-1">الموضوع</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.subject}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  className="w-full bg-white border border-neutral-200 text-neutral-900 text-sm px-4 py-3 rounded-2xl focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 transition-all placeholder:text-neutral-300"
+                  placeholder="ما هو موضوع استفسارك؟"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-neutral-800 mr-1">الرسالة</label>
                 <textarea
                   required
                   rows="5"
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-green/30 focus:border-brand-green text-sm"
-                  placeholder="اكتب رسالتك هنا..."
+                  className="w-full bg-white border border-neutral-200 text-neutral-900 text-sm px-4 py-3 rounded-2xl focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 transition-all placeholder:text-neutral-300 resize-none"
+                  placeholder="اكتب تفاصيل رسالتك هنا..."
                 />
               </div>
-              <button type="submit" className="btn-primary w-full py-4">
-                إرسال الرسالة
-              </button>
+
+              <div className="pt-2">
+                <Button 
+                  type="submit" 
+                  fullWidth 
+                  size="lg"
+                  className="bg-neutral-900 hover:bg-neutral-950 text-white font-bold text-sm rounded-2xl transition-transform active:scale-95 duration-200 border-none"
+                >
+                  إرسال الرسالة
+                </Button>
+              </div>
             </form>
           </div>
 
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-xl font-black text-brand-dark mb-2">معلومات الاتصال</h2>
-              <p className="text-neutral-500 text-sm">نسعد بتواصلكم خلال أوقات العمل الرسمية.</p>
-            </div>
-
-            {[
-              { title: "الموقع", value: "الرياض، المملكة العربية السعودية", icon: "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z" },
-              { title: "البريد الإلكتروني", value: "info@boxline.com.sa", icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z", href: "mailto:info@boxline.com.sa" },
-              { title: "الهاتف", value: "+966 92 000 1234", icon: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z", href: "tel:+966920001234" },
-            ].map((item) => (
-              <div key={item.title} className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-brand-green-light text-brand-green rounded-xl flex items-center justify-center shrink-0">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon} />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="font-bold text-brand-dark">{item.title}</h3>
-                  {item.href ? (
-                    <a href={item.href} className="text-sm text-neutral-500 mt-1 hover:text-brand-green transition-colors block">{item.value}</a>
-                  ) : (
-                    <p className="text-sm text-neutral-500 mt-1">{item.value}</p>
-                  )}
-                </div>
-              </div>
-            ))}
-
-            <a
-              href="https://wa.me/966920001234"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary w-full py-4"
-            >
-              تواصل عبر واتساب
-            </a>
-          </div>
         </div>
       </main>
 
