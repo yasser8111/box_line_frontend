@@ -20,8 +20,8 @@ export default function About() {
         {/* Our Story Section */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
           <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-gray-900 border-r-4 border-emerald-600 pr-4">
-              قصتنا
+            <h2 className="text-4xl font-bold text-gray-900">
+              قصتنـــا
             </h2>
             <p className="text-gray-600 leading-relaxed text-lg">
               بدأت رحلة <span className="font-semibold text-emerald-600">BOX LINE</span> من شغفنا بتحويل الهدايا التقليدية إلى تجارب استثنائية تُحفر في الذاكرة. نحن لا نبيع مجرد منتجات، بل نجمع مشاعركم ونصيغها in صناديق فاخرة مصممة بعناية لتعبّر عن كل لحظة حب، تقدير، أو امتنان.

@@ -21,6 +21,7 @@ import { useToast } from "../context/ToastContext";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import Button from "../components/ui/Button";
+import EmptyState from "../components/ui/EmptyState";
 import { getProductById } from "../data/products";
 
 export function ProductBreadcrumb({ productName }) {
@@ -278,30 +279,27 @@ export default function ProductDetails() {
     return (
       <div className="min-h-screen bg-white flex flex-col font-sans" dir="rtl">
         <Header />
-        <div className="grow flex flex-col items-center justify-center p-8 text-center space-y-4">
-          <p className="text-neutral-500 text-sm">
-            عذراً، المنتج الذي تبحث عنه غير متاح حالياً.
-          </p>
-          <Link
-            to="/products"
-            className="text-xs font-bold text-neutral-900 underline"
-          >
-            العودة للمنتجات
-          </Link>
+
+        <div className="grow flex items-center justify-center py-30">
+          <EmptyState
+            title="عذراً، المنتج غير متاح"
+            description="يبدو أن الرابط الذي اتبعته غير صحيح، أو أن المنتج قد تم حذفه أو نفدت كميته حالياً."
+            buttonText="العودة للمنتجات"
+            onAction={() => (window.location.href = "/products")}
+          />
         </div>
+
         <Footer />
       </div>
     );
   }
 
-  // حسابات الفاتورة والملخص
   const subtotal = parseFloat((product.price * quantity).toFixed(2));
   const tax = parseFloat((subtotal * 0.15).toFixed(2));
   const total = parseFloat((subtotal + tax).toFixed(2));
   const priceReport = { subtotal, tax, total };
 
   const handleAddToCart = () => {
-    // خيارات افتراضية مبسطة جداً مخصصة للمنتجات الجاهزة للبيع مباشرة
     const defaultReadyOptions = {
       size: "قياسي",
       paperType: "جاهز",
@@ -317,7 +315,6 @@ export default function ProductDetails() {
     });
   };
 
-  // التأكد من مصفوفة الصور، وإذا كانت غير موجودة نضع الصورة الأساسية داخل مصفوفة
   const galleryImages =
     product.images && product.images.length > 0
       ? product.images
@@ -333,7 +330,6 @@ export default function ProductDetails() {
 
       <main className="grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 w-full relative pb-24 lg:pb-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 lg:items-start">
-          {/* قسم استعراض الصور المتعددة */}
           <div className="lg:col-span-5 lg:sticky lg:top-24">
             <ProductImagesGallery
               images={galleryImages}
@@ -341,7 +337,6 @@ export default function ProductDetails() {
             />
           </div>
 
-          {/* قسم تفاصيل المنتج والوصف والمشتريات */}
           <div className="lg:col-span-7">
             <ProductDetailsInfo
               product={product}

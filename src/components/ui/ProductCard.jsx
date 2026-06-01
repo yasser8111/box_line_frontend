@@ -33,7 +33,7 @@ function MainProductCard({ product, linkPrefix = "product" }) {
         {!imageLoaded && (
           <div className="absolute inset-0 bg-neutral-200 animate-pulse z-10" />
         )}
-        
+
         <img
           src={product?.image}
           alt={product?.name || product?.title || ""}
@@ -51,7 +51,7 @@ function MainProductCard({ product, linkPrefix = "product" }) {
           </h3>
           {product?.desc && (
             <p className="text-[10px] sm:text-xs text-neutral-500 line-clamp-2">
-              {product.desc}
+              {product.desc.slice(0, 100)}
             </p>
           )}
         </div>
@@ -72,7 +72,11 @@ function MainProductCard({ product, linkPrefix = "product" }) {
   );
 }
 
-export default function ProductCard({ product, linkPrefix = "product", isLoading = false }) {
+export default function ProductCard({
+  product,
+  linkPrefix = "product",
+  isLoading = false,
+}) {
   if (isLoading || !product) {
     return <ProductSkeleton />;
   }

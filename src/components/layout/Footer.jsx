@@ -7,7 +7,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-[#181824] text-neutral-400 py-16 px-4 md:px-12 lg:px-24 border-t border-neutral-800" dir="rtl">
+    <footer className="bg-neutral-900 text-neutral-400 py-16 px-4 md:px-12 lg:px-24 border-t border-neutral-800" dir="rtl">
       <div className="max-w-7xl mx-auto">
         
         {/* Main Grid */}
